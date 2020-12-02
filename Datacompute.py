@@ -6,16 +6,6 @@ import nltk
 nltk.download('punkt')
 
 #-------------------------------------------------------------------------------#
-import praw as praw
-
-from textblob import TextBlob
-
-import datetime
-
-import pandas
-
-import time
-
 # starting time
 start = time.time()
 
@@ -23,17 +13,17 @@ start = time.time()
 
 I_subreddit = 'politics'
 
-I_postcount = 1000
+I_postcount = 5
 
-I_comment_count = 0
+I_comment_count = 5
 
-I_reply_count = 0
+I_reply_count = 5
 
 I_wordtocount = 'Trump'
 
 #Outputs:-----------------------------------------------------------------------#
 
-I_postcount = 0
+#I_postcount = 0
 
 I_date = []
 
@@ -43,7 +33,7 @@ I_sentsubjectivity = []
 
 I_sentpolarity = []
 
-#Definitions-------------------------------------------------------------------#
+#Definitions------------------------------------------------------------------#
 
 # defenition for checking polarity
 def getpolarity(text):
@@ -59,7 +49,7 @@ def getpolarity(text):
     
     #print("#POL# - [" + str(blob.sentiment) + "]" + "\n")
 
-#------------------------------------------------------------------------------#
+#-----------------------------------------------------------------------------#
 
 # defenition for checking word occurence
 def getwordcount(text):
@@ -85,6 +75,16 @@ subreddit = reddit.subreddit(I_subreddit)
 # Sorting Posts by hot and setting Limits
 newposts = subreddit.hot(limit=I_postcount)
 
+#------------------------------------------------------------------------------#
+
+I_postcount = 0
+
+I_commentcount = 0
+
+I_replycount = 0
+
+#------------------------------------------------------------------------------#
+
 # iterating throught posts    
 for posts in newposts:
     
@@ -95,7 +95,7 @@ for posts in newposts:
     # avoids the 'More_Comment' Error
     posts.comments.replace_more(limit=0)
     
-    # ----------------------------------------------------------------------#
+    # --------------------------------------------------------------#
     
     #append post date
     I_date.append(datetime.datetime.fromtimestamp(posts.created))
@@ -106,13 +106,17 @@ for posts in newposts:
     #append sentiment
     getpolarity(str(posts.title))
     
-    # ---------------------------------------------------------------------#
+    # --------------------------------------------------------------#
 
     #print("$POST$ " + posts.title + "\n" )
     
     for comments in posts.comments[:I_comment_count]:
+        
+        I_commentcount = I_commentcount + 1
     
-        # -----------------------------------------------------------------#
+        print("Reading Comment No. " + str(I_commentcount))
+    
+        # --------------------------------------------------------------#
     
         #append comment date
         I_date.append(datetime.datetime.fromtimestamp(comments.created))
@@ -123,7 +127,7 @@ for posts in newposts:
         #append sentiment
         getpolarity(str(comments.body))
     
-        # -----------------------------------------------------------------#
+        # --------------------------------------------------------------#
         
         #print("  $COMMENT$ " + comments.body + "\n")
     
@@ -131,6 +135,10 @@ for posts in newposts:
             
             for reply in comments.replies[:I_reply_count]:
                 
+                I_replycount = I_replycount + 1
+    
+                print("Reading Reply No.. " + str(I_replycount))
+        
                 # --------------------------------------------------------------#
     
                 #append reply date
@@ -151,7 +159,7 @@ end = time.time()
 
 #--------------------------------------------------------------------------------#
 
-print("Total Posts,Comments & Replies = " + str(len(I_wordlist)) + "\n")
+print("Total Posts,Comments & Replies = " + str(len(I_date)) + "\n")
     
 print("There are - " + str(sum(I_frequency))  + " mentions of " + "| " + I_wordtocount + " |" + "\n")
 

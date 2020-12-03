@@ -5,6 +5,15 @@ pip install textblob
 import nltk
 nltk.download('punkt')
 
+import praw as praw
+
+from textblob import TextBlob
+
+import datetime
+
+import pandas
+
+import time
 #-------------------------------------------------------------------------------#
 # starting time
 start = time.time()

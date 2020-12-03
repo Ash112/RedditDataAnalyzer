@@ -168,14 +168,23 @@ end = time.time()
 
 #--------------------------------------------------------------------------------#
 
+def Average(lst):
+    
+    return sum(lst) / len(lst) 
+
 print("Total Posts,Comments & Replies = " + str(len(I_date)) + "\n")
     
 print("There are - " + str(sum(I_frequency))  + " mentions of " + "| " + I_wordtocount + " |" + "\n")
 
 print("Time taken to run =" + str(end - start) + "\n")
 
-data = {'Dates' : I_date, 'Frequency': I_frequency, 'Sentiment_Polarity': I_sentpolarity, 'SentSubjectivity': I_sentsubjectivity}
+print('Average polarity = ' + str(Average(I_sentpolarity)) + "\n")
 
+print('Average Subjectivity = ' + str(Average(I_sentsubjectivity)))
+
+
+data = {'Dates' : I_date, 'Frequency': I_frequency, 'Sentiment_Polarity': I_sentpolarity, 'SentSubjectivity': I_sentsubjectivity}
+    
 table = pandas.DataFrame(data)
 
 with pandas.option_context('display.max_rows', None, 'display.max_columns', None):

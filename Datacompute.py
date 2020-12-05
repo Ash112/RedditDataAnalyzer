@@ -42,6 +42,10 @@ I_date = []
 
 I_frequency = []
 
+I_score = []
+
+I_type = []
+
 I_sentsubjectivity = []
 
 I_sentpolarity = []
@@ -136,6 +140,12 @@ for posts in newposts:
     
     # --------------------------------------------------------------#
     
+    #append type
+    I_type.append("P")
+    
+    #append post upvotes
+    I_score.append(posts.score)
+    
     #append post date
     I_date.append(datetime.datetime.fromtimestamp(posts.created))
     
@@ -156,6 +166,12 @@ for posts in newposts:
         print("Reading Comment No. " + str(I_commentcount))
     
         # --------------------------------------------------------------#
+        
+        #append type
+        I_type.append("C")
+        
+        #append post upvotes
+        I_score.append(comments.score)
     
         #append comment date
         I_date.append(datetime.datetime.fromtimestamp(comments.created))
@@ -179,7 +195,13 @@ for posts in newposts:
                 print("Reading Reply No.. " + str(I_replycount))
         
                 # --------------------------------------------------------------#
-    
+                
+                #append type
+                I_type.append("R")
+                
+                #append post upvotes
+                I_score.append(reply.score)
+        
                 #append reply date
                 I_date.append(datetime.datetime.fromtimestamp(reply.created))
     

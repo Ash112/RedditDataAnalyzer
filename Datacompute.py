@@ -226,20 +226,37 @@ print("There are - " + str(sum(I_frequency))  + " mentions of " + "| " + I_wordt
 
 print("Time taken to run =" + str(end - start) + "\n")
 
-print('Average polarity = ' + str(Average(I_sentpolarity)) + "\n")
+#--------------------------------------------------------------#
 
-print('Average Subjectivity = ' + str(Average(I_sentsubjectivity)))
+#Average polarity calculations(Overall)
 
+actualvaluespol = (len(I_sentpolarity) - (I_sentpolarity.count(0)))
 
-data = {'Dates' : I_date, 'Frequency': I_frequency, 'Sentiment_Polarity': I_sentpolarity, 'SentSubjectivity': I_sentsubjectivity}
+sumpolarity = sum(I_sentpolarity)
+
+avgpolarity = sumpolarity/actualvaluespol
+
+print('Average polarity = ' + str(avgpolarity) + "\n")
+
+#Average subjectivity calculations(Overall)
+
+actualvaluessub = (len(I_sentsubjectivity) - (I_sentsubjectivity.count(0)))
+
+sumpolarity = sum(I_sentsubjectivity)
+
+avgsubjectivty = sumpolarity/actualvaluessub
+
+print('Average Subjectivity = ' + str(avgsubjectivty))
+
+#--------------------------------------------------------------#
+
+data = {'Dates' : I_date, 'Frequency': I_frequency, 'Sentiment_Polarity': I_sentpolarity, 'SentSubjectivity': I_sentsubjectivity,'Score': I_score,'Type': I_type}
     
 table = pandas.DataFrame(data)
 
-with pandas.option_context('display.max_rows', 10, 'display.max_columns', None):
+with pandas.option_context('display.max_rows', None, 'display.max_columns', None):
     
     display(table)
-
-#---------------------------------------------------------------------------------------#
 
 #---------------------------------------------------------------------------------------#
 import matplotlib

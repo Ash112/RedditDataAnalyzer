@@ -5,7 +5,7 @@ nltk.download('punkt')
 from nltk import *
 nltk.download('wordnet')
 
-stopwords = {'weekend','edit','like','\'m','also','\'re','\\"','\,','n\'t','\'s','discussion','know','get','fuck','go','question','report','ban','violations','click','post','https','their',',','.','/','subreddit','see','rule','please','as','in','i','they', 'then', 'not', 'ma', 'here', 'other', 'won', 'up', 'weren', 'being', 'we', 'those', 'an', 'them', 'which', 'him', 'so', 'yourselves', 'what', 'own', 'has', 'should', 'above', 'in', 'myself', 'against', 'that', 'before', 't', 'just', 'into', 'about', 'most', 'd', 'where', 'our', 'or', 'such', 'ours', 'of', 'doesn', 'further', 'needn', 'now', 'some', 'too', 'hasn', 'more', 'the', 'yours', 'her', 'below', 'same', 'how', 'very', 'is', 'did', 'you', 'his', 'when', 'few', 'does', 'down', 'yourself', 'i', 'do', 'both', 'shan', 'have', 'itself', 'shouldn', 'through', 'themselves', 'o', 'didn', 've', 'm', 'off', 'out', 'but', 'and', 'doing', 'any', 'nor', 'over', 'had', 'because', 'himself', 'theirs', 'me', 'by', 'she', 'whom', 'hers', 're', 'hadn', 'who', 'he', 'my', 'if', 'will', 'are', 'why', 'from', 'am', 'with', 'been', 'its', 'ourselves', 'ain', 'couldn', 'a', 'aren', 'under', 'll', 'on', 'y', 'can', 'they', 'than', 'after', 'wouldn', 'each', 'once', 'mightn', 'for', 'this', 'these', 's', 'only', 'haven', 'having', 'all', 'don', 'it', 'there', 'until', 'again', 'to', 'while', 'be', 'no', 'during', 'herself', 'as', 'mustn', 'between', 'was', 'at', 'your', 'were', 'isn', 'wasn'}
+stopwords = {'say','answer','related','posting','people','group','first','link','retarded','weekend','edit','like','\'m','also','\'re','\\"','\,','n\'t','\'s','discussion','know','get','fuck','go','question','report','ban','violations','click','post','https','http','their',',','.','/','subreddit','see','rule','please','as','in','i','they', 'then', 'not', 'ma', 'here', 'other', 'won', 'up', 'weren', 'being', 'we', 'those', 'an', 'them', 'which', 'him', 'so', 'yourselves', 'what', 'own', 'has', 'should', 'above', 'in', 'myself', 'against', 'that', 'before', 't', 'just', 'into', 'about', 'most', 'd', 'where', 'our', 'or', 'such', 'ours', 'of', 'doesn', 'further', 'needn', 'now', 'some', 'too', 'hasn', 'more', 'the', 'yours', 'her', 'below', 'same', 'how', 'very', 'is', 'did', 'you', 'his', 'when', 'few', 'does', 'down', 'yourself', 'i', 'do', 'both', 'shan', 'have', 'itself', 'shouldn', 'through', 'themselves', 'o', 'didn', 've', 'm', 'off', 'out', 'but', 'and', 'doing', 'any', 'nor', 'over', 'had', 'because', 'himself', 'theirs', 'me', 'by', 'she', 'whom', 'hers', 're', 'hadn', 'who', 'he', 'my', 'if', 'will', 'are', 'why', 'from', 'am', 'with', 'been', 'its', 'ourselves', 'ain', 'couldn', 'a', 'aren', 'under', 'll', 'on', 'y', 'can', 'they', 'than', 'after', 'wouldn', 'each', 'once', 'mightn', 'for', 'this', 'these', 's', 'only', 'haven', 'having', 'all', 'don', 'it', 'there', 'until', 'again', 'to', 'while', 'be', 'no', 'during', 'herself', 'as', 'mustn', 'between', 'was', 'at', 'your', 'were', 'isn', 'wasn'}
 
 import praw as praw
 
@@ -24,15 +24,17 @@ from emoji import UNICODE_EMOJI
 # starting time
 start = time.time()
 
+lem = WordNetLemmatizer()
+
 #Inputs:-----------------------------------------------------------------------#
 
-I_subreddit = 'WallStreetbets'
+I_subreddit = 'coronavirus'
 
 I_postcount = 5
 
-I_comment_count = 5
+I_comment_count = 2
 
-I_reply_count = 5
+I_reply_count = 2
 
 I_wordtocount = 'tsla'
 
@@ -77,21 +79,26 @@ def getwordcount(text):
     for words in blob.words:
         
         lowerwords = words.lower()
-    
-        if lowerwords not in stopwords:
-            
-            if (len(lowerwords) >= 3) and (len(lowerwords) <= 10):
+        
+        lemmedwords = lem.lemmatize(words,"n")
+          
+        if (len(lowerwords) >= 3) and (len(lowerwords) <= 9):
                 
-                for character in lowerwords:
+            for character in lowerwords:
                     
-                    if character not in UNICODE_EMOJI:
+                if character not in UNICODE_EMOJI:
                         
-                        if any (character.isdigit() for character in lowerwords):
+                    if any (character.isdigit() for character in lowerwords):
                             
-                            break
-                        else:
+                        break
+                        
+                    lemmedwords = lem.lemmatize(lowerwords,"n")
+                    
+                    if lemmedwords not in stopwords:
+                        
+                        if (len(lowerwords) >= 3):
                             
-                            I_allwords.append(lowerwords)
+                            I_allwords.append(lemmedwords)
                             
                             continue
                             
@@ -217,7 +224,6 @@ for posts in newposts:
                 
 #end time                
 end = time.time()
-
 #--------------------------------------------------------------------------------#
 
 print("Total Posts,Comments & Replies = " + str(len(I_date)) + "\n")
@@ -242,9 +248,9 @@ print('Average polarity = ' + str(avgpolarity) + "\n")
 
 actualvaluessub = (len(I_sentsubjectivity) - (I_sentsubjectivity.count(0)))
 
-sumpolarity = sum(I_sentsubjectivity)
+sumsubjectivity = sum(I_sentsubjectivity)
 
-avgsubjectivty = sumpolarity/actualvaluessub
+avgsubjectivty = sumsubjectivity/actualvaluessub
 
 print('Average Subjectivity = ' + str(avgsubjectivty))
 
@@ -257,7 +263,8 @@ table = pandas.DataFrame(data)
 with pandas.option_context('display.max_rows', None, 'display.max_columns', None):
     
     display(table)
-
+    
+#---------------------------------------------------------------------------------------#
 #---------------------------------------------------------------------------------------#
 import matplotlib
 
@@ -278,13 +285,7 @@ frequentwordscount = []
 
 #-------------------------------------------------------------------------------#
 
-lem = WordNetLemmatizer()
-
-for words in I_allwords:
-            
-    cleaned_words.append(lem.lemmatize(words,"n"))
-
-fdist = FreqDist(cleaned_words)
+fdist = FreqDist(I_allwords)
 
 #-------------------------------------------------------------------------------#
 

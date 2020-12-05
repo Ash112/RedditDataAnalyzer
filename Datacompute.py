@@ -1,9 +1,11 @@
-pip install praw textblob nltk seaborn
+pip install praw textblob nltk seaborn emoji
 
 import nltk
 nltk.download('punkt')
 from nltk import *
 nltk.download('wordnet')
+
+stopwords = {'weekend','edit','like','\'m','also','\'re','\\"','\,','n\'t','\'s','discussion','know','get','fuck','go','question','report','ban','violations','click','post','https','their',',','.','/','subreddit','see','rule','please','as','in','i','they', 'then', 'not', 'ma', 'here', 'other', 'won', 'up', 'weren', 'being', 'we', 'those', 'an', 'them', 'which', 'him', 'so', 'yourselves', 'what', 'own', 'has', 'should', 'above', 'in', 'myself', 'against', 'that', 'before', 't', 'just', 'into', 'about', 'most', 'd', 'where', 'our', 'or', 'such', 'ours', 'of', 'doesn', 'further', 'needn', 'now', 'some', 'too', 'hasn', 'more', 'the', 'yours', 'her', 'below', 'same', 'how', 'very', 'is', 'did', 'you', 'his', 'when', 'few', 'does', 'down', 'yourself', 'i', 'do', 'both', 'shan', 'have', 'itself', 'shouldn', 'through', 'themselves', 'o', 'didn', 've', 'm', 'off', 'out', 'but', 'and', 'doing', 'any', 'nor', 'over', 'had', 'because', 'himself', 'theirs', 'me', 'by', 'she', 'whom', 'hers', 're', 'hadn', 'who', 'he', 'my', 'if', 'will', 'are', 'why', 'from', 'am', 'with', 'been', 'its', 'ourselves', 'ain', 'couldn', 'a', 'aren', 'under', 'll', 'on', 'y', 'can', 'they', 'than', 'after', 'wouldn', 'each', 'once', 'mightn', 'for', 'this', 'these', 's', 'only', 'haven', 'having', 'all', 'don', 'it', 'there', 'until', 'again', 'to', 'while', 'be', 'no', 'during', 'herself', 'as', 'mustn', 'between', 'was', 'at', 'your', 'were', 'isn', 'wasn'}
 
 import praw as praw
 
@@ -14,15 +16,17 @@ import datetime
 import pandas
 
 import time
+
+from emoji import UNICODE_EMOJI
+
 #-------------------------------------------------------------------------------#
+
 # starting time
 start = time.time()
 
 #Inputs:-----------------------------------------------------------------------#
 
-stopwords = {'edit','like','\'m','also','\'re','\\"','\,','n\'t','\'s','discussion','know','get','fuck','go','question','report','ban','violations','click','post','https','their',',','.','/','subreddit','see','rule','please','as','in','i','they', 'then', 'not', 'ma', 'here', 'other', 'won', 'up', 'weren', 'being', 'we', 'those', 'an', 'them', 'which', 'him', 'so', 'yourselves', 'what', 'own', 'has', 'should', 'above', 'in', 'myself', 'against', 'that', 'before', 't', 'just', 'into', 'about', 'most', 'd', 'where', 'our', 'or', 'such', 'ours', 'of', 'doesn', 'further', 'needn', 'now', 'some', 'too', 'hasn', 'more', 'the', 'yours', 'her', 'below', 'same', 'how', 'very', 'is', 'did', 'you', 'his', 'when', 'few', 'does', 'down', 'yourself', 'i', 'do', 'both', 'shan', 'have', 'itself', 'shouldn', 'through', 'themselves', 'o', 'didn', 've', 'm', 'off', 'out', 'but', 'and', 'doing', 'any', 'nor', 'over', 'had', 'because', 'himself', 'theirs', 'me', 'by', 'she', 'whom', 'hers', 're', 'hadn', 'who', 'he', 'my', 'if', 'will', 'are', 'why', 'from', 'am', 'with', 'been', 'its', 'ourselves', 'ain', 'couldn', 'a', 'aren', 'under', 'll', 'on', 'y', 'can', 'they', 'than', 'after', 'wouldn', 'each', 'once', 'mightn', 'for', 'this', 'these', 's', 'only', 'haven', 'having', 'all', 'don', 'it', 'there', 'until', 'again', 'to', 'while', 'be', 'no', 'during', 'herself', 'as', 'mustn', 'between', 'was', 'at', 'your', 'were', 'isn', 'wasn'}
-
-I_subreddit = 'politics'
+I_subreddit = 'WallStreetbets'
 
 I_postcount = 5
 
@@ -30,11 +34,9 @@ I_comment_count = 5
 
 I_reply_count = 5
 
-I_wordtocount = 'trump'
+I_wordtocount = 'tsla'
 
 #Outputs:-----------------------------------------------------------------------#
-
-#I_postcount = 0
 
 I_date = []
 
@@ -55,16 +57,13 @@ def getpolarity(text):
     
     sentiment = blob.sentiment
     
-    #for sentence in blob.sentences:
     I_sentsubjectivity.append(sentiment[1])
     
     I_sentpolarity.append(sentiment[0])
-    
-    #print("#POL# - [" + str(blob.sentiment) + "]" + "\n")
 
 #-----------------------------------------------------------------------------#
 
-# defenition for checking word occurence
+# defenition for checking word occurence and cleaning words.
 def getwordcount(text):
     
     blob = TextBlob(text)
@@ -95,6 +94,10 @@ def getwordcount(text):
     return frequency
 
 #-----------------------------------------------------------------------------#
+#mean
+def Average(lst):
+    
+    return sum(lst) / len(lst) 
 
 #-----------------------------------------------------------------------------#
 
@@ -195,10 +198,6 @@ end = time.time()
 
 #--------------------------------------------------------------------------------#
 
-def Average(lst):
-    
-    return sum(lst) / len(lst) 
-
 print("Total Posts,Comments & Replies = " + str(len(I_date)) + "\n")
     
 print("There are - " + str(sum(I_frequency))  + " mentions of " + "| " + I_wordtocount + " |" + "\n")
@@ -214,13 +213,13 @@ data = {'Dates' : I_date, 'Frequency': I_frequency, 'Sentiment_Polarity': I_sent
     
 table = pandas.DataFrame(data)
 
-with pandas.option_context('display.max_rows', 5, 'display.max_columns', None):
+with pandas.option_context('display.max_rows', 10, 'display.max_columns', None):
     
     display(table)
 
-
 #---------------------------------------------------------------------------------------#
 
+#---------------------------------------------------------------------------------------#
 import matplotlib
 
 from matplotlib import pyplot as plot
@@ -238,19 +237,13 @@ frequentwords = []
 
 frequentwordscount = []
 
-lem = WordNetLemmatizer()
-
 #-------------------------------------------------------------------------------#
 
+lem = WordNetLemmatizer()
+
 for words in I_allwords:
-    
-    lowerwords = words.lower()
-    
-    if lowerwords not in stopwords:
-        
-        if (len(lowerwords) >= 3) and (len(lowerwords) <= 10) :
             
-            cleaned_words.append(lem.lemmatize(lowerwords,"v"))
+    cleaned_words.append(lem.lemmatize(words,"n"))
 
 fdist = FreqDist(cleaned_words)
 
@@ -261,6 +254,7 @@ sorted_dict = {}
 sorted_keys = sorted(fdist, key=fdist.get)
 
 for w in sorted_keys:
+    
     sorted_dict[w] = fdist[w]
     
 #-------------------------------------------------------------------------------#
@@ -271,8 +265,10 @@ for keys,values in sorted_dict.items():
     
     frequentwordscount.append(values)
     
-    print(keys,values)
+    #print(keys,values)
     
+ #-------------------------------------------------------------------------------#   
+
 frequencydata = { 'Frequency': frequentwordscount[-50:], 'Words' : frequentwords[-50:]}
 
 freqtable = pandas.DataFrame(frequencydata)
@@ -280,6 +276,14 @@ freqtable = pandas.DataFrame(frequencydata)
 with pandas.option_context('display.max_rows', 5, 'display.max_columns', None):
     
     display(freqtable)
+
+fdist.plot(50,cumulative=False)
+
+bargraph = seaborn.barplot(x='Words', y='Frequency', data=freqtable)
+
+bargraph.set_xticklabels(bargraph.get_xticklabels(), rotation=90)
+
+plot.show()
 
 fdist.plot(50,cumulative=False)
 

@@ -71,7 +71,7 @@ def getwordcount(text):
     
     frequency = str(blob).count(I_wordtocount)
     
-    for word in blob.words:
+    for words in blob.words:
         
         lowerwords = words.lower()
     
@@ -79,9 +79,22 @@ def getwordcount(text):
             
             if (len(lowerwords) >= 3) and (len(lowerwords) <= 10):
                 
-                I_allwords.append(word)
-    
+                for character in lowerwords:
+                    
+                    if character not in UNICODE_EMOJI:
+                        
+                        if any (character.isdigit() for character in lowerwords):
+                            
+                            break
+                        else:
+                            
+                            I_allwords.append(lowerwords)
+                            
+                            continue
+                            
     return frequency
+
+#-----------------------------------------------------------------------------#
 
 #-----------------------------------------------------------------------------#
 

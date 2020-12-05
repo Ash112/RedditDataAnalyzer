@@ -1,4 +1,4 @@
-pip install praw textblob nltk
+pip install praw textblob nltk seaborn
 
 import nltk
 nltk.download('punkt')
@@ -20,15 +20,17 @@ start = time.time()
 
 #Inputs:-----------------------------------------------------------------------#
 
+stopwords = {'edit','like','\'m','also','\'re','\\"','\,','n\'t','\'s','discussion','know','get','fuck','go','question','report','ban','violations','click','post','https','their',',','.','/','subreddit','see','rule','please','as','in','i','they', 'then', 'not', 'ma', 'here', 'other', 'won', 'up', 'weren', 'being', 'we', 'those', 'an', 'them', 'which', 'him', 'so', 'yourselves', 'what', 'own', 'has', 'should', 'above', 'in', 'myself', 'against', 'that', 'before', 't', 'just', 'into', 'about', 'most', 'd', 'where', 'our', 'or', 'such', 'ours', 'of', 'doesn', 'further', 'needn', 'now', 'some', 'too', 'hasn', 'more', 'the', 'yours', 'her', 'below', 'same', 'how', 'very', 'is', 'did', 'you', 'his', 'when', 'few', 'does', 'down', 'yourself', 'i', 'do', 'both', 'shan', 'have', 'itself', 'shouldn', 'through', 'themselves', 'o', 'didn', 've', 'm', 'off', 'out', 'but', 'and', 'doing', 'any', 'nor', 'over', 'had', 'because', 'himself', 'theirs', 'me', 'by', 'she', 'whom', 'hers', 're', 'hadn', 'who', 'he', 'my', 'if', 'will', 'are', 'why', 'from', 'am', 'with', 'been', 'its', 'ourselves', 'ain', 'couldn', 'a', 'aren', 'under', 'll', 'on', 'y', 'can', 'they', 'than', 'after', 'wouldn', 'each', 'once', 'mightn', 'for', 'this', 'these', 's', 'only', 'haven', 'having', 'all', 'don', 'it', 'there', 'until', 'again', 'to', 'while', 'be', 'no', 'during', 'herself', 'as', 'mustn', 'between', 'was', 'at', 'your', 'were', 'isn', 'wasn'}
+
 I_subreddit = 'politics'
 
-I_postcount = 4
+I_postcount = 5
 
-I_comment_count = 3
+I_comment_count = 5
 
-I_reply_count = 3
+I_reply_count = 5
 
-I_wordtocount = 'Trump'
+I_wordtocount = 'trump'
 
 #Outputs:-----------------------------------------------------------------------#
 
@@ -71,7 +73,13 @@ def getwordcount(text):
     
     for word in blob.words:
         
-        I_allwords.append(word)
+        lowerwords = words.lower()
+    
+        if lowerwords not in stopwords:
+            
+            if (len(lowerwords) >= 3) and (len(lowerwords) <= 10):
+                
+                I_allwords.append(word)
     
     return frequency
 
@@ -199,22 +207,27 @@ with pandas.option_context('display.max_rows', 5, 'display.max_columns', None):
 
 
 #---------------------------------------------------------------------------------------#
-#visualizing frequency of words
 
 import matplotlib
 
 from matplotlib import pyplot as plot
 
+import seaborn
+
+from matplotlib import rcParams
+
+# figure size in inches
+rcParams['figure.figsize'] = 9,9
+
 cleaned_words = []
 
-#custom stopwords list
-stopwords = {'discussion','question','report','ban','violations','click','post','https','their',',','.','/','subreddit','see','rule','please','as','in','i','they', 'then', 'not', 'ma', 'here', 'other', 'won', 'up', 'weren', 'being', 'we', 'those', 'an', 'them', 'which', 'him', 'so', 'yourselves', 'what', 'own', 'has', 'should', 'above', 'in', 'myself', 'against', 'that', 'before', 't', 'just', 'into', 'about', 'most', 'd', 'where', 'our', 'or', 'such', 'ours', 'of', 'doesn', 'further', 'needn', 'now', 'some', 'too', 'hasn', 'more', 'the', 'yours', 'her', 'below', 'same', 'how', 'very', 'is', 'did', 'you', 'his', 'when', 'few', 'does', 'down', 'yourself', 'i', 'do', 'both', 'shan', 'have', 'itself', 'shouldn', 'through', 'themselves', 'o', 'didn', 've', 'm', 'off', 'out', 'but', 'and', 'doing', 'any', 'nor', 'over', 'had', 'because', 'himself', 'theirs', 'me', 'by', 'she', 'whom', 'hers', 're', 'hadn', 'who', 'he', 'my', 'if', 'will', 'are', 'why', 'from', 'am', 'with', 'been', 'its', 'ourselves', 'ain', 'couldn', 'a', 'aren', 'under', 'll', 'on', 'y', 'can', 'they', 'than', 'after', 'wouldn', 'each', 'once', 'mightn', 'for', 'this', 'these', 's', 'only', 'haven', 'having', 'all', 'don', 'it', 'there', 'until', 'again', 'to', 'while', 'be', 'no', 'during', 'herself', 'as', 'mustn', 'between', 'was', 'at', 'your', 'were', 'isn', 'wasn'}
+frequentwords = []
 
-#tokenized_word=word_tokenize(data)
-
-#ps = PorterStemmer()
+frequentwordscount = []
 
 lem = WordNetLemmatizer()
+
+#-------------------------------------------------------------------------------#
 
 for words in I_allwords:
     
@@ -222,15 +235,43 @@ for words in I_allwords:
     
     if lowerwords not in stopwords:
         
-        cleaned_words.append(lem.lemmatize(lowerwords,"v"))
+        if (len(lowerwords) >= 3) and (len(lowerwords) <= 10) :
+            
+            cleaned_words.append(lem.lemmatize(lowerwords,"v"))
 
-# creating a frequency Dict
 fdist = FreqDist(cleaned_words)
 
-for keys,values in fdist.items():
+#-------------------------------------------------------------------------------#
 
+sorted_dict = {}
+
+sorted_keys = sorted(fdist, key=fdist.get)
+
+for w in sorted_keys:
+    sorted_dict[w] = fdist[w]
+    
+#-------------------------------------------------------------------------------#
+
+for keys,values in sorted_dict.items():
+    
+    frequentwords.append(keys)
+    
+    frequentwordscount.append(values)
+    
     print(keys,values)
+    
+frequencydata = { 'Frequency': frequentwordscount[-50:], 'Words' : frequentwords[-50:]}
 
-fdist.plot(25,cumulative=False)
+freqtable = pandas.DataFrame(frequencydata)
+
+with pandas.option_context('display.max_rows', 5, 'display.max_columns', None):
+    
+    display(freqtable)
+
+fdist.plot(50,cumulative=False)
+
+bargraph = seaborn.barplot(x='Words', y='Frequency', data=freqtable)
+
+bargraph.set_xticklabels(bargraph.get_xticklabels(), rotation=90)
 
 plot.show()

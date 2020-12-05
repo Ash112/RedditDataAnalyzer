@@ -225,7 +225,6 @@ for posts in newposts:
 #end time                
 end = time.time()
 #--------------------------------------------------------------------------------#
-
 print("Total Posts,Comments & Replies = " + str(len(I_date)) + "\n")
     
 print("There are - " + str(sum(I_frequency))  + " mentions of " + "| " + I_wordtocount + " |" + "\n")
@@ -260,7 +259,7 @@ data = {'Dates' : I_date, 'Frequency': I_frequency, 'Sentiment_Polarity': I_sent
     
 table = pandas.DataFrame(data)
 
-with pandas.option_context('display.max_rows', 1, 'display.max_columns', None):
+with pandas.option_context('display.max_rows', None, 'display.max_columns', None):
     
     display(table)
 #--------------------------------------------------------------#
@@ -270,18 +269,23 @@ I_hourlydate = []
 
 for date in I_date:
     
-    I_hourlydate.append(str(date.year)+"."+ str(date.month)+"."+ str(date.day)+"-"+str(date.hour))
+    #I_hourlydate.append(str(date.year)+"."+ str(date.month)+"."+ str(date.day)+"-"+str(date.hour))
+    
+    newdate = (str(date.year)+ str(date.month)+ str(date.day)+str(date.hour))
+    
+    I_hourlydate.append(int(newdate ))
+    
 
 groupeddata = {'Dates' : I_hourlydate, 'Frequency': I_frequency, 'Sentiment_Polarity': I_sentpolarity, 'SentSubjectivity': I_sentsubjectivity,'Score': I_score}
 
 tablegrouped = pandas.DataFrame(groupeddata)
 
+grouptedtable = tablegrouped.groupby('Dates').sum()
+
 with pandas.option_context('display.max_rows', None, 'display.max_columns', None):
     
-    display(tablegrouped)
-    
-    
-#print(tablegrouped.groupby(0).mean()) 
+    display(grouptedtable)
+  
     
 #---------------------------------------------------------------------------------------#
 

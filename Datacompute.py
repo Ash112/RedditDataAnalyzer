@@ -1,9 +1,9 @@
-pip install praw
-
-pip install textblob
+pip install praw textblob nltk
 
 import nltk
 nltk.download('punkt')
+from nltk import *
+nltk.download('wordnet')
 
 import praw as praw
 
@@ -22,11 +22,11 @@ start = time.time()
 
 I_subreddit = 'politics'
 
-I_postcount = 5
+I_postcount = 4
 
-I_comment_count = 5
+I_comment_count = 3
 
-I_reply_count = 5
+I_reply_count = 3
 
 I_wordtocount = 'Trump'
 
@@ -41,6 +41,8 @@ I_frequency = []
 I_sentsubjectivity = []
 
 I_sentpolarity = []
+
+I_allwords = []
 
 #Definitions------------------------------------------------------------------#
 
@@ -66,6 +68,10 @@ def getwordcount(text):
     blob = TextBlob(text)
     
     frequency = str(blob).count(I_wordtocount)
+    
+    for word in blob.words:
+        
+        I_allwords.append(word)
     
     return frequency
 
@@ -187,6 +193,44 @@ data = {'Dates' : I_date, 'Frequency': I_frequency, 'Sentiment_Polarity': I_sent
     
 table = pandas.DataFrame(data)
 
-with pandas.option_context('display.max_rows', None, 'display.max_columns', None):
+with pandas.option_context('display.max_rows', 5, 'display.max_columns', None):
     
     display(table)
+
+
+#---------------------------------------------------------------------------------------#
+#visualizing frequency of words
+
+import matplotlib
+
+from matplotlib import pyplot as plot
+
+cleaned_words = []
+
+#custom stopwords list
+stopwords = {'discussion','question','report','ban','violations','click','post','https','their',',','.','/','subreddit','see','rule','please','as','in','i','they', 'then', 'not', 'ma', 'here', 'other', 'won', 'up', 'weren', 'being', 'we', 'those', 'an', 'them', 'which', 'him', 'so', 'yourselves', 'what', 'own', 'has', 'should', 'above', 'in', 'myself', 'against', 'that', 'before', 't', 'just', 'into', 'about', 'most', 'd', 'where', 'our', 'or', 'such', 'ours', 'of', 'doesn', 'further', 'needn', 'now', 'some', 'too', 'hasn', 'more', 'the', 'yours', 'her', 'below', 'same', 'how', 'very', 'is', 'did', 'you', 'his', 'when', 'few', 'does', 'down', 'yourself', 'i', 'do', 'both', 'shan', 'have', 'itself', 'shouldn', 'through', 'themselves', 'o', 'didn', 've', 'm', 'off', 'out', 'but', 'and', 'doing', 'any', 'nor', 'over', 'had', 'because', 'himself', 'theirs', 'me', 'by', 'she', 'whom', 'hers', 're', 'hadn', 'who', 'he', 'my', 'if', 'will', 'are', 'why', 'from', 'am', 'with', 'been', 'its', 'ourselves', 'ain', 'couldn', 'a', 'aren', 'under', 'll', 'on', 'y', 'can', 'they', 'than', 'after', 'wouldn', 'each', 'once', 'mightn', 'for', 'this', 'these', 's', 'only', 'haven', 'having', 'all', 'don', 'it', 'there', 'until', 'again', 'to', 'while', 'be', 'no', 'during', 'herself', 'as', 'mustn', 'between', 'was', 'at', 'your', 'were', 'isn', 'wasn'}
+
+#tokenized_word=word_tokenize(data)
+
+#ps = PorterStemmer()
+
+lem = WordNetLemmatizer()
+
+for words in I_allwords:
+    
+    lowerwords = words.lower()
+    
+    if lowerwords not in stopwords:
+        
+        cleaned_words.append(lem.lemmatize(lowerwords,"v"))
+
+# creating a frequency Dict
+fdist = FreqDist(cleaned_words)
+
+for keys,values in fdist.items():
+
+    print(keys,values)
+
+fdist.plot(25,cumulative=False)
+
+plot.show()

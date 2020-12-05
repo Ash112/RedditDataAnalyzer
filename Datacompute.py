@@ -255,14 +255,33 @@ avgsubjectivty = sumsubjectivity/actualvaluessub
 print('Average Subjectivity = ' + str(avgsubjectivty))
 
 #--------------------------------------------------------------#
-
+# all data
 data = {'Dates' : I_date, 'Frequency': I_frequency, 'Sentiment_Polarity': I_sentpolarity, 'SentSubjectivity': I_sentsubjectivity,'Score': I_score,'Type': I_type}
     
 table = pandas.DataFrame(data)
 
-with pandas.option_context('display.max_rows', None, 'display.max_columns', None):
+with pandas.option_context('display.max_rows', 1, 'display.max_columns', None):
     
     display(table)
+#--------------------------------------------------------------#
+
+# grouped data
+I_hourlydate = []
+
+for date in I_date:
+    
+    I_hourlydate.append(str(date.year)+"."+ str(date.month)+"."+ str(date.day)+"-"+str(date.hour))
+
+groupeddata = {'Dates' : I_hourlydate, 'Frequency': I_frequency, 'Sentiment_Polarity': I_sentpolarity, 'SentSubjectivity': I_sentsubjectivity,'Score': I_score}
+
+tablegrouped = pandas.DataFrame(groupeddata)
+
+with pandas.option_context('display.max_rows', None, 'display.max_columns', None):
+    
+    display(tablegrouped)
+    
+    
+#print(tablegrouped.groupby(0).mean()) 
     
 #---------------------------------------------------------------------------------------#
 

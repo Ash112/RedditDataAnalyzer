@@ -265,7 +265,7 @@ with pandas.option_context('display.max_rows', None, 'display.max_columns', None
     display(table)
     
 #---------------------------------------------------------------------------------------#
-#---------------------------------------------------------------------------------------#
+
 import matplotlib
 
 from matplotlib import pyplot as plot
@@ -275,7 +275,7 @@ import seaborn
 from matplotlib import rcParams
 
 # figure size in inches
-rcParams['figure.figsize'] = 9,9
+rcParams['figure.figsize'] = 25,25
 
 cleaned_words = []
 
@@ -297,9 +297,10 @@ for w in sorted_keys:
     
     sorted_dict[w] = fdist[w]
     
+dictwords = dict(reversed(list(sorted_dict.items())))    
 #-------------------------------------------------------------------------------#
 
-for keys,values in sorted_dict.items():
+for keys,values in dictwords.items():
     
     frequentwords.append(keys)
     
@@ -309,7 +310,7 @@ for keys,values in sorted_dict.items():
     
  #-------------------------------------------------------------------------------#   
 
-frequencydata = { 'Frequency': frequentwordscount[-50:], 'Words' : frequentwords[-50:]}
+frequencydata = { 'Frequency': frequentwordscount[:100], 'Words' : frequentwords[:100]}
 
 freqtable = pandas.DataFrame(frequencydata)
 
@@ -319,16 +320,8 @@ with pandas.option_context('display.max_rows', 5, 'display.max_columns', None):
 
 fdist.plot(50,cumulative=False)
 
-bargraph = seaborn.barplot(x='Words', y='Frequency', data=freqtable)
-
 bargraph.set_xticklabels(bargraph.get_xticklabels(), rotation=90)
 
-plot.show()
-
-fdist.plot(50,cumulative=False)
-
-bargraph = seaborn.barplot(x='Words', y='Frequency', data=freqtable)
-
-bargraph.set_xticklabels(bargraph.get_xticklabels(), rotation=90)
+bargraph = seaborn.barplot(x='Frequency', y='Words', data=freqtable, edgecolor="1")
 
 plot.show()

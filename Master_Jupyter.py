@@ -247,25 +247,29 @@ print("Time taken to run =" + str(end - start) + "\n")
 #--------------------------------------------------------------#
 
 #Average polarity calculations(Overall)
+try:
+    
+    actualvaluespol = (len(I_sentpolarity) - (I_sentpolarity.count(0)))
 
-actualvaluespol = (len(I_sentpolarity) - (I_sentpolarity.count(0)))
+    sumpolarity = sum(I_sentpolarity)
 
-sumpolarity = sum(I_sentpolarity)
+    avgpolarity = sumpolarity/actualvaluespol
 
-avgpolarity = sumpolarity/actualvaluespol
+    print('Average polarity = ' + str(avgpolarity) + "\n")
 
-print('Average polarity = ' + str(avgpolarity) + "\n")
+    #Average subjectivity calculations(Overall)
 
-#Average subjectivity calculations(Overall)
+    actualvaluessub = (len(I_sentsubjectivity) - (I_sentsubjectivity.count(0)))
 
-actualvaluessub = (len(I_sentsubjectivity) - (I_sentsubjectivity.count(0)))
+    sumsubjectivity = sum(I_sentsubjectivity)
 
-sumsubjectivity = sum(I_sentsubjectivity)
+    avgsubjectivty = sumsubjectivity/actualvaluessub
 
-avgsubjectivty = sumsubjectivity/actualvaluessub
-
-print('Average Subjectivity = ' + str(avgsubjectivty))
-
+    print('Average Subjectivity = ' + str(avgsubjectivty))
+    
+except:
+    
+    pass
 #--------------------------------------------------------------#
 # all data
 data = {'Dates' : I_date, 'Frequency': I_frequency, 'Sentiment_Polarity': I_sentpolarity, 'SentSubjectivity': I_sentsubjectivity,'Score': I_score,'Type': I_type}

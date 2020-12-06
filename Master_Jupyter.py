@@ -1,11 +1,18 @@
-pip install praw textblob nltk seaborn emoji
+pip install praw textblob nltk seaborn emoji gensim sklearn
 
 import nltk
 nltk.download('punkt')
 from nltk import *
 nltk.download('wordnet')
 
-stopwords = {'say','answer','related','posting','people','group','first','link','retarded','weekend','edit','like','\'m','also','\'re','\\"','\,','n\'t','\'s','discussion','know','get','fuck','go','question','report','ban','violations','click','post','https','http','their',',','.','/','subreddit','see','rule','please','as','in','i','they', 'then', 'not', 'ma', 'here', 'other', 'won', 'up', 'weren', 'being', 'we', 'those', 'an', 'them', 'which', 'him', 'so', 'yourselves', 'what', 'own', 'has', 'should', 'above', 'in', 'myself', 'against', 'that', 'before', 't', 'just', 'into', 'about', 'most', 'd', 'where', 'our', 'or', 'such', 'ours', 'of', 'doesn', 'further', 'needn', 'now', 'some', 'too', 'hasn', 'more', 'the', 'yours', 'her', 'below', 'same', 'how', 'very', 'is', 'did', 'you', 'his', 'when', 'few', 'does', 'down', 'yourself', 'i', 'do', 'both', 'shan', 'have', 'itself', 'shouldn', 'through', 'themselves', 'o', 'didn', 've', 'm', 'off', 'out', 'but', 'and', 'doing', 'any', 'nor', 'over', 'had', 'because', 'himself', 'theirs', 'me', 'by', 'she', 'whom', 'hers', 're', 'hadn', 'who', 'he', 'my', 'if', 'will', 'are', 'why', 'from', 'am', 'with', 'been', 'its', 'ourselves', 'ain', 'couldn', 'a', 'aren', 'under', 'll', 'on', 'y', 'can', 'they', 'than', 'after', 'wouldn', 'each', 'once', 'mightn', 'for', 'this', 'these', 's', 'only', 'haven', 'having', 'all', 'don', 'it', 'there', 'until', 'again', 'to', 'while', 'be', 'no', 'during', 'herself', 'as', 'mustn', 'between', 'was', 'at', 'your', 'were', 'isn', 'wasn'}
+from gensim.parsing.preprocessing import remove_stopwords
+import gensim
+
+gensim_stopwords = gensim.parsing.preprocessing.STOPWORDS
+
+from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
+
+stopwords = {'aint','years','thread','year','one','contact','comment','first','last','bot','remove','removed','vote','violating','flair','shitposts','shitpost','say','answer','related','posting','people','group','first','link','retarded','weekend','edit','like','\'m','also','\'re','\\"','\,','n\'t','\'s','discussion','know','get','fuck','go','question','report','ban','violations','click','post','https','http','their',',','.','/','subreddit','see','rule','please','as','in','i','they', 'then', 'not', 'ma', 'here', 'other', 'won', 'up', 'weren', 'being', 'we', 'those', 'an', 'them', 'which', 'him', 'so', 'yourselves', 'what', 'own', 'has', 'should', 'above', 'in', 'myself', 'against', 'that', 'before', 't', 'just', 'into', 'about', 'most', 'd', 'where', 'our', 'or', 'such', 'ours', 'of', 'doesn', 'further', 'needn', 'now', 'some', 'too', 'hasn', 'more', 'the', 'yours', 'her', 'below', 'same', 'how', 'very', 'is', 'did', 'you', 'his', 'when', 'few', 'does', 'down', 'yourself', 'i', 'do', 'both', 'shan', 'have', 'itself', 'shouldn', 'through', 'themselves', 'o', 'didn', 've', 'm', 'off', 'out', 'but', 'and', 'doing', 'any', 'nor', 'over', 'had', 'because', 'himself', 'theirs', 'me', 'by', 'she', 'whom', 'hers', 're', 'hadn', 'who', 'he', 'my', 'if', 'will', 'are', 'why', 'from', 'am', 'with', 'been', 'its', 'ourselves', 'ain', 'couldn', 'a', 'aren', 'under', 'll', 'on', 'y', 'can', 'they', 'than', 'after', 'wouldn', 'each', 'once', 'mightn', 'for', 'this', 'these', 's', 'only', 'haven', 'having', 'all', 'don', 'it', 'there', 'until', 'again', 'to', 'while', 'be', 'no', 'during', 'herself', 'as', 'mustn', 'between', 'was', 'at', 'your', 'were', 'isn', 'wasn'}
 
 import praw as praw
 
@@ -26,9 +33,10 @@ start = time.time()
 
 lem = WordNetLemmatizer()
 
+porter = PorterStemmer()
 #Inputs:-----------------------------------------------------------------------#
 
-I_subreddit = 'coronavirus'
+I_subreddit = 'wallstreetbets'
 
 I_postcount = 5
 
@@ -80,8 +88,8 @@ def getwordcount(text):
         
         lowerwords = words.lower()
         
-        lemmedwords = lem.lemmatize(words,"n")
-          
+        print("Original - " + lowerwords)
+        
         if (len(lowerwords) >= 3) and (len(lowerwords) <= 9):
                 
             for character in lowerwords:
@@ -92,15 +100,22 @@ def getwordcount(text):
                             
                         break
                         
-                    lemmedwords = lem.lemmatize(lowerwords,"n")
+                    lemmedwords = lem.lemmatize(lowerwords,"v")
                     
-                    if lemmedwords not in stopwords:
+                    lowerlemmedwords=lemmedwords.lower()
+                    
+                    print("lemmed - " + lowerlemmedwords)
+                    
+                    if (lowerlemmedwords not in stopwords) and (lowerlemmedwords not in gensim_stopwords) and(lowerlemmedwords not in ENGLISH_STOP_WORDS):
                         
-                        if (len(lowerwords) >= 3):
+                        portedwords = porter.stem(lowerlemmedwords)
+                        
+                        print("ported - " + lowerlemmedwords)
+                        
+                        if (len(lowerlemmedwords) >= 3):
                             
-                            I_allwords.append(lemmedwords)
+                            I_allwords.append(lowerlemmedwords)
                             
-                            continue
                             
     return frequency
 

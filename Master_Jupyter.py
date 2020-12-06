@@ -102,15 +102,11 @@ def getwordcount(text):
                         
                     lemmedwords = lem.lemmatize(lowerwords,"v")
                     
-                    lowerlemmedwords=lemmedwords.lower()
+                    lowerlemmedwords = lemmedwords.lower()
                     
                     print("lemmed - " + lowerlemmedwords)
                     
-                    if (lowerlemmedwords not in stopwords) and (lowerlemmedwords not in gensim_stopwords) and(lowerlemmedwords not in ENGLISH_STOP_WORDS):
-                        
-                        portedwords = porter.stem(lowerlemmedwords)
-                        
-                        print("ported - " + lowerlemmedwords)
+                    if (lowerlemmedwords not in stopwords) and (lowerlemmedwords not in gensim_stopwords) and (lowerlemmedwords not in ENGLISH_STOP_WORDS):
                         
                         if (len(lowerlemmedwords) >= 3):
                             
@@ -239,6 +235,7 @@ for posts in newposts:
                 
 #end time                
 end = time.time()
+
 #--------------------------------------------------------------------------------#
 import seaborn
 

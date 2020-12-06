@@ -1,0 +1,12 @@
+praw
+nltk
+seaborn
+matplotlib
+emoji
+time
+pandas
+textblob
+datetime
+
+nltk.download('punkt')
+nltk.download('wordnet')

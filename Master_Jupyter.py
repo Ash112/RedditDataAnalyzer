@@ -38,13 +38,15 @@ porter = PorterStemmer()
 
 I_subreddit = 'wallstreetbets'
 
-I_postcount = 5
+I_postcount = 50
 
-I_comment_count = 2
+I_comment_count = 1
 
-I_reply_count = 2
+I_reply_count = 1
 
 I_wordtocount = 'tsla'
+
+I_flairfilter = ["Shitposts","Satire","storytime","Meme"]
 
 #Outputs:-----------------------------------------------------------------------#
 
@@ -88,7 +90,7 @@ def getwordcount(text):
         
         lowerwords = words.lower()
         
-        print("Original - " + lowerwords)
+        #print("Original - " + lowerwords)
         
         if (len(lowerwords) >= 3) and (len(lowerwords) <= 9):
                 
@@ -104,7 +106,7 @@ def getwordcount(text):
                     
                     lowerlemmedwords = lemmedwords.lower()
                     
-                    print("lemmed - " + lowerlemmedwords)
+                    #print("lemmed - " + lowerlemmedwords)
                     
                     if (lowerlemmedwords not in stopwords) and (lowerlemmedwords not in gensim_stopwords) and (lowerlemmedwords not in ENGLISH_STOP_WORDS):
                         
@@ -149,89 +151,95 @@ I_replycount = 0
 # iterating throught posts    
 for posts in newposts:
     
-    I_postcount = I_postcount + 1
     
-    print("Reading Post No. " + str(I_postcount))
     
-    # avoids the 'More_Comment' Error
-    posts.comments.replace_more(limit=0)
-    
-    # --------------------------------------------------------------#
-    
-    #append type
-    I_type.append("P")
-    
-    #append post upvotes
-    I_score.append(posts.score)
-    
-    #append post date
-    I_date.append(datetime.datetime.fromtimestamp(posts.created))
-    
-    #append word frequency
-    I_frequency.append(getwordcount(str(posts.title)))
-    
-    #append sentiment
-    getpolarity(str(posts.title))
-    
-    # --------------------------------------------------------------#
-
-    #print("$POST$ " + posts.title + "\n" )
-    
-    for comments in posts.comments[:I_comment_count]:
+    if (posts.link_flair_text not in I_flairfilter):
         
-        I_commentcount = I_commentcount + 1
+        print(posts.link_flair_text)
+        
+        I_postcount = I_postcount + 1
     
-        print("Reading Comment No. " + str(I_commentcount))
+        print("Reading Post No. " + str(I_postcount))
+    
+        # avoids the 'More_Comment' Error
+        posts.comments.replace_more(limit=0)
     
         # --------------------------------------------------------------#
-        
-        #append type
-        I_type.append("C")
-        
-        #append post upvotes
-        I_score.append(comments.score)
     
-        #append comment date
-        I_date.append(datetime.datetime.fromtimestamp(comments.created))
+        #append type
+        I_type.append("P")
+    
+        #append post upvotes
+        I_score.append(posts.score)
+    
+        #append post date
+        I_date.append(datetime.datetime.fromtimestamp(posts.created))
     
         #append word frequency
-        I_frequency.append(getwordcount(str(comments.body)))
+        I_frequency.append(getwordcount(str(posts.title)))
     
         #append sentiment
-        getpolarity(str(comments.body))
+        getpolarity(str(posts.title))
     
         # --------------------------------------------------------------#
-        
-        #print("  $COMMENT$ " + comments.body + "\n")
+
+        #print("$POST$ " + posts.title + "\n" )
     
-        if len(comments.replies)>0:
+        for comments in posts.comments[:I_comment_count]:
+        
+            I_commentcount = I_commentcount + 1
+    
+            print("Reading Comment No. " + str(I_commentcount))
+    
+            # --------------------------------------------------------------#
+        
+            #append type
+            I_type.append("C")
+        
+            #append post upvotes
+            I_score.append(comments.score)
+    
+            #append comment date
+            I_date.append(datetime.datetime.fromtimestamp(comments.created))
+    
+            #append word frequency
+            I_frequency.append(getwordcount(str(comments.body)))
+    
+            #append sentiment
+            getpolarity(str(comments.body))
+    
+            # --------------------------------------------------------------#
+        
+            #print("  $COMMENT$ " + comments.body + "\n")
+    
+            if len(comments.replies)>0:
             
-            for reply in comments.replies[:I_reply_count]:
+                for reply in comments.replies[:I_reply_count]:
                 
-                I_replycount = I_replycount + 1
+                    I_replycount = I_replycount + 1
     
-                print("Reading Reply No.. " + str(I_replycount))
+                    print("Reading Reply No.. " + str(I_replycount))
         
-                # --------------------------------------------------------------#
+                    # --------------------------------------------------------------#
                 
-                #append type
-                I_type.append("R")
+                    #append type
+                    I_type.append("R")
                 
-                #append post upvotes
-                I_score.append(reply.score)
+                    #append post upvotes
+                    I_score.append(reply.score)
         
-                #append reply date
-                I_date.append(datetime.datetime.fromtimestamp(reply.created))
+                    #append reply date
+                    I_date.append(datetime.datetime.fromtimestamp(reply.created))
     
-                #append word frequency
-                I_frequency.append(getwordcount(str(reply.body)))
+                    #append word frequency
+                    I_frequency.append(getwordcount(str(reply.body)))
     
-                #append sentiment
-                getpolarity(str(reply.body))
+                    #append sentiment
+                    getpolarity(str(reply.body))
     
-                # --------------------------------------------------------------#
+                    # --------------------------------------------------------------#
                 
-                #print("   $REPLY$ " + reply.body + "\n")    
+                    #print("   $REPLY$ " + reply.body + "\n")    
                 
 #end time                
 end = time.time()

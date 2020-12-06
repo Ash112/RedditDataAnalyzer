@@ -225,6 +225,19 @@ for posts in newposts:
 #end time                
 end = time.time()
 #--------------------------------------------------------------------------------#
+import seaborn
+
+import matplotlib
+
+from matplotlib import pyplot as plot
+
+from matplotlib import rcParams
+
+#--------------------------------------------------------------#
+
+# figure size in inches
+rcParams['figure.figsize'] = 25,15
+
 print("Total Posts,Comments & Replies = " + str(len(I_date)) + "\n")
     
 print("There are - " + str(sum(I_frequency))  + " mentions of " + "| " + I_wordtocount + " |" + "\n")
@@ -259,34 +272,108 @@ data = {'Dates' : I_date, 'Frequency': I_frequency, 'Sentiment_Polarity': I_sent
     
 table = pandas.DataFrame(data)
 
-with pandas.option_context('display.max_rows', None, 'display.max_columns', None):
+with pandas.option_context('display.max_rows', 3, 'display.max_columns', None):
     
     display(table)
-#--------------------------------------------------------------#
-
+    
+#----------------------------------------------------------------------------------------------#
 # grouped data
 I_hourlydate = []
 
 for date in I_date:
     
-    #I_hourlydate.append(str(date.year)+"."+ str(date.month)+"."+ str(date.day)+"-"+str(date.hour))
+    year = str(date.year)
     
-    newdate = (str(date.year)+ str(date.month)+ str(date.day)+str(date.hour))
+    month =  "0" +str(date.month)
     
-    I_hourlydate.append(int(newdate ))
+    day =  "0" +str(date.day)
     
+    hour =  "0" +str(date.hour)
+    
+    newdate = ((year[2:]) + '-' + str(month[-2:]) + '-' +  day[-2:] + ' (' +  hour[-2:]+":00)")
+    
+    I_hourlydate.append(str(newdate))
+    
+#----------------------------------------------------------------------------------------------#    
+#1) Grouped data with Frequency
 
-groupeddata = {'Dates' : I_hourlydate, 'Frequency': I_frequency, 'Sentiment_Polarity': I_sentpolarity, 'SentSubjectivity': I_sentsubjectivity,'Score': I_score}
+frequencygroup = {'Dates' : I_hourlydate, 'Frequency': I_frequency}
 
-tablegrouped = pandas.DataFrame(groupeddata)
+frequencytable = pandas.DataFrame(frequencygroup)
 
-grouptedtable = tablegrouped.groupby('Dates').sum()
+frequencytable = frequencytable.groupby('Dates').sum()
 
-with pandas.option_context('display.max_rows', None, 'display.max_columns', None):
+#----------------------------------------------------------------------------------------------#
+#2) Grouped data with Sent Polarity
+
+Polaritygroup = {'Dates' : I_hourlydate, 'Sentiment_Polarity': I_sentpolarity}
+
+Polaritytable = pandas.DataFrame(Polaritygroup)
+
+Polaritytable = Polaritytable.groupby('Dates').mean()
+
+#----------------------------------------------------------------------------------------------#
+#3) Grouped data with Sent Polarity
+
+Subjectivitygroup = {'Dates' : I_hourlydate, 'SentSubjectivity': I_sentsubjectivity}
+
+Subjectivitytable = pandas.DataFrame(Subjectivitygroup)
+
+Subjectivitytable = Subjectivitytable.groupby('Dates').mean()
+
+#----------------------------------------------------------------------------------------------#
+#4) Grouped data with Score
+
+Scoregroup = {'Dates' : I_hourlydate, 'Score': I_score}
+
+Scoretable = pandas.DataFrame(Scoregroup)
+
+Scoretable = Scoretable.groupby('Dates').sum()
+
+#----------------------------------------------------------------------------------------------# 
+#print all tables
+with pandas.option_context('display.max_rows', 1, 'display.max_columns', None):
     
-    display(grouptedtable)
-  
+    display(frequencytable,Polaritytable,Subjectivitytable,Scoretable)
     
+#----------------------------------------------------------------------------------------------#  
+#plot all graphs
+
+seaborn.set(style="white")  
+
+seaborn.despine(offset=10, trim=True)
+
+seaborn.set_context("poster", font_scale = 1, rc={"grid.linewidth": 5})
+
+fig, axs = plot.subplots(nrows=4,figsize=(35,25))
+
+plot1 = seaborn.lineplot(data=frequencytable, x="Dates", y="Frequency",ax=axs[0])
+
+plot.draw()
+
+plot1.set_xticklabels(plot1.get_xticklabels(), rotation=90)
+
+plot2 = seaborn.lineplot(data=Scoretable, x="Dates", y="Score",ax=axs[1])
+
+plot.draw()
+
+plot2.set_xticklabels(plot1.get_xticklabels(), rotation=90)
+
+plot3 = seaborn.lineplot(data=Polaritytable, x="Dates", y="Sentiment_Polarity",ax=axs[2])
+
+plot.draw()
+
+plot3.set_xticklabels(plot1.get_xticklabels(), rotation=90)
+
+plot4 = seaborn.lineplot(data=Subjectivitytable, x="Dates", y="SentSubjectivity",ax=axs[3])
+
+plot.draw()
+
+plot4.set_xticklabels(plot1.get_xticklabels(), rotation=90)
+
+fig.tight_layout()
+
+
 #---------------------------------------------------------------------------------------#
 
 import matplotlib

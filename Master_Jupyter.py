@@ -36,7 +36,7 @@ lem = WordNetLemmatizer()
 porter = PorterStemmer()
 #Inputs:-----------------------------------------------------------------------#
 
-I_subreddit = 'wallstreetbets'
+I_subreddit = 'news'
 
 I_postcount = 50
 
@@ -44,7 +44,7 @@ I_comment_count = 1
 
 I_reply_count = 1
 
-I_wordtocount = 'tsla'
+I_wordtocount = 'covid'
 
 I_flairfilter = ["Shitposts","Satire","storytime","Meme"]
 

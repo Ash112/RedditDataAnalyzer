@@ -40,7 +40,7 @@ I_comment_count = 2
 
 I_reply_count = 2
 
-I_wordtocount = 'trump'
+I_wordtocount = 'covid'
 
 # Outputs:-----------------------------------------------------------------------#
 

@@ -2,7 +2,7 @@
 
 body{
   font-family: 'Work Sans', sans-serif;
-  background: #DDDDDD;
+  background: #C0C0C0;
   text-align: center;
 }
 
@@ -13,7 +13,7 @@ input[type=text] {
   box-sizing: border-box;
   border: none;
   outline: none;
-  border-bottom: 2px solid red;
+  border-bottom: 1px solid red;
 }
 
 input[type=text]:focus {
@@ -21,19 +21,36 @@ input[type=text]:focus {
   background-color: #ccffcc;
 }
 
-input[type=submit] {
+button[type=submit] {
 
-  padding: 12px 20px;
-  margin: 8px 0;
+  padding: 15px 15px;
+  margin: 15px 15;
   box-sizing: border-box;
-  border: 12px;
-  color: white;
+  border: 1px solid red;
+  outline: none;
 }
+
+button[type=submit]:focus {
+  width:100px;
+  height:50px;
+  border: 0;
+
+  }
 
 #chart {
   max-width: 1000px;
-  margin: 35px auto;
+  margin: 50px auto;
+  padding: 25px 25px 0px 25px;
   border-style: solid;
+  border: 1px solid red;
+  border-width: 1px;
+
+  #chart1 {
+  max-width: 1000px;
+  margin: 50px auto;
+  padding: 25px 25px 0px 25px;
+  border-style: solid;
+  border: 1px solid red;
   border-width: 1px;
 }
 
@@ -44,13 +61,4 @@ input[type=submit] {
   border-width: 1px;
 )
 
-.button {
-  background-color: #4CAF50; /* Green */
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-}
+

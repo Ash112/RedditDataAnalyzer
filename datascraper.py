@@ -10,6 +10,12 @@ import json
 
 import pandas
 
+import math
+
+import decimal
+
+from decimal import *
+
 from emoji import UNICODE_EMOJI
 
 from nltk import WordNetLemmatizer
@@ -149,6 +155,14 @@ def scrapedata(subredditname,wordname,postcount,commentcount,replycount,flairfil
     def Average(lst):
         return sum(lst) / len(lst)
 
+    # -----------------------------------------------------------------------------#
+    # roundup
+    def roundupnew (list):
+        newdata = []
+        for x in list:
+            newdata.append(round(x, 2))
+
+        return newdata
 
     # -----------------------------------------------------------------------------#
 
@@ -319,13 +333,13 @@ def scrapedata(subredditname,wordname,postcount,commentcount,replycount,flairfil
 
         hour = "0" + str(date.hour)
 
-        newdate = ((year[2:]) + '.' + str(month[-2:]) + '.' + day[-2:] + ' (' + hour[-2:] + ":00)")
+        #newdate = ((year[2:]) + '.' + str(month[-2:]) + '.' + day[-2:] + ' (' + hour[-2:] + ":00)")
 
-        #newdate = ((year[2:]) + '.' + str(month[-2:]) + '.' + day[-2:] + '.'+hour[-2:] + ".00")
+        newdate = (day[-2:] + '.' + str(month[-2:]) + '.' + year[2:] + '-'+hour[-2:]+ "H")
 
         I_hourlydate.append(str(newdate))
 
-    # grouped hourly data:
+    #grouped hourly data:
 
     #Grouped_hourlydate = set(I_hourlydate)
 
@@ -380,21 +394,18 @@ def scrapedata(subredditname,wordname,postcount,commentcount,replycount,flairfil
 
     word_frequency = frequencytable['Frequency'].tolist()
 
-    #date_frequency = frequencytable['Dates'].tolist()
-
     score_frequency = Scoretable['Score'].tolist()
 
-    subjectivity_frequency = Subjectivitytable['SentSubjectivity'].tolist()
+    subjectivity_frequency = roundupnew(Subjectivitytable['SentSubjectivity'].tolist())
 
-    polarity_frequency = Polaritytable['Sentiment_Polarity'].tolist()
+    polarity_frequency = roundupnew(Polaritytable['Sentiment_Polarity'].tolist())
 
     #type_frequency = I_type
 
     #allwords_frequency = I_allwords
 
+    # ---------------------------------------------------------------------------------------#
 
-    return json.dumps(word_frequency),json.dumps(Grouped_hourlydate)
+    print(polarity_frequency)
 
-
-
-#word_time_frequency_data = scrapedata("news","stimulus",25,3,3,'shitpost')
+    return json.dumps(word_frequency),json.dumps(Grouped_hourlydate),json.dumps(subjectivity_frequency),json.dumps(polarity_frequency)

@@ -1,0 +1,106 @@
+
+        // vairables from python throught html
+
+        //common date data
+        var time_frequency = JSON.parse(document.querySelector('#time_frequency').value)
+
+        //frequencychartoptions
+        var word_frequency = JSON.parse(document.querySelector('#word_frequency').value)
+
+        //sentimentchartoptions
+        var sentiment_frequency = JSON.parse(document.querySelector('#sentiment_frequency').value)
+
+        document.write(time_frequency)
+        document.write(word_frequency)
+        document.write(sentiment_frequency)
+
+    // chart for frequency
+        var frequencychartoptions = {
+          series: [{
+            name: "Frequency",
+            data: word_frequency
+        }],
+          chart: {
+          height: 350,
+          type: 'line',
+          zoom: {
+            enabled: true
+          }
+},
+        dataLabels: {
+          enabled: false
+        },
+        },
+        stroke: {
+          curve: 'smooth',
+          width: 2
+        },
+        title: {
+          text: 'Word Frequency',
+          align: 'center'
+        },
+        grid: {
+          row: {
+            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+            opacity: 0.5
+          },
+        },
+        xaxis: {
+          categories: time_frequency,
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart"),frequencychartoptions);
+        chart.render();
+
+
+        // function for geenrating charts
+        function createchart(data_y, data_x) {
+
+             var subjectivitychartoptions = {
+              series: [{
+                name: "Subjectivity",
+                data: data_y
+
+            }],
+              chart: {
+              height: 350,
+              type: 'line',
+
+              zoom: {
+                enabled: true
+              }
+            },
+
+            dataLabels: {
+              enabled: false
+            },
+
+            },
+            stroke: {
+              curve: 'smooth',
+              width: 2
+            },
+            title: {
+              text: 'Sentiment Subjectivity',
+              align: 'center'
+            },
+            grid: {
+              row: {
+                colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                opacity: 0.5
+              },
+            },
+            xaxis: {
+              categories: data_x,
+            }
+
+
+            var chart1 = new ApexCharts(document.querySelector("#chart1"), subjectivitychartoptions);
+            chart1.render();
+
+            return chart1;   // The function returns the product of p1 and p2
+
+            };
+
+var newchart = createchart(sentiment_frequency,time_frequency)

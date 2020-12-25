@@ -12,7 +12,7 @@ app = Flask(__name__)
 # a route where we will intially render the main page with random values?
 @app.route("/")
 def hello():
-    return render_template("index.html", word_frequency = initialvalue(),time_frequency =initialvalue())
+    return render_template("index.html", word_frequency = initialvalue(),time_frequency =initialvalue(),sentiment_frequency = initialvalue())
 
 # a route that takes user inpur(Subreddit and Word) returns frequency over time data
 @app.route('/', methods =["GET", "POST"])
@@ -25,7 +25,7 @@ def userinput():
     commentcount = ""
     replycount = ""
 
-    word_time_frequency_data = [initialvalue(),initialvalue()]
+    word_time_frequency_data = [initialvalue(),initialvalue(),initialvalue(),initialvalue()]
 
     if request.method == "POST":
         #inputs
@@ -52,12 +52,11 @@ def userinput():
             word_time_frequency_data = scrapedata(subreddit,word,postcount,commentcount,replycount,ffilter)
 
             #print(json.loads(word_time_frequency_data[1]))
-            #print(json.loads(word_time_frequency_data[0]))
+            print(word_time_frequency_data[2])
+            #print(word_time_frequency_data[1])
+            #print(word_time_frequency_data[0])
 
-
-
-
-    return render_template("index.html", word_frequency = word_time_frequency_data[0],time_frequency = word_time_frequency_data[1])
+    return render_template("index.html", word_frequency = word_time_frequency_data[0],time_frequency = word_time_frequency_data[1],sentiment_frequency = word_time_frequency_data[2],polarity_frequency = word_time_frequency_data[3])
 
 # run the application
 if __name__ == "__main__":

@@ -1,0 +1,56 @@
+
+
+body{
+  font-family: 'Work Sans', sans-serif;
+  background: #DDDDDD;
+  text-align: center;
+}
+
+input[type=text] {
+
+  padding: 13px 10px;
+  margin: 13px 10;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  border-bottom: 2px solid red;
+}
+
+input[type=text]:focus {
+  border: 0.1px solid red;
+  background-color: #ccffcc;
+}
+
+input[type=submit] {
+
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: 12px;
+  color: white;
+}
+
+#chart {
+  max-width: 1000px;
+  margin: 35px auto;
+  border-style: solid;
+  border-width: 1px;
+}
+
+#userinput (
+  max-width: 1000px;
+  margin: 35px auto;
+  border-style: solid;
+  border-width: 1px;
+)
+
+.button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}

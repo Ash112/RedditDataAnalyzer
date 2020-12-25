@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+        <link rel="stylesheet" href="static/style.css">
+
+    <title>Title</title>
+
+    <input type="hidden"  id="word_frequency" value="{{ word_frequency | safe }}">
+
+    <input type="hidden"  id="time_frequency" value="{{ time_frequency }}">
+
+    <input type="hidden"  id="flair_filter" value="{{ ffilter }}">
+
+    <input type="hidden"  id="post_count" value="{{ postcount }}">
+
+    <input type="hidden"  id="comment_count" value="{{ commentcount }}">
+
+    <input type="hidden"  id="reply_count" value="{{ replycount }}">
+
+    <link rel="stylesheet" href="static/style.css">
+
+    <div class = "userinput">
+        <form action="{{ url_for("userinput")}}" method="post">
+
+        <br>
+
+        <label for="subname">Subreddit:</label>
+        <input type="text" id="subname" name="sname" placeholder="News,Funny,Askreddit...etc">
+
+        <label for="words">Word:</label>
+        <input type="text" id="words" name="wname" placeholder="Covid,Biden,Stimulus...etc">
+
+        <label for="flairfilter">Flair Filter:</label>
+        <input type="text" id="ffilter" name="ffilter" placeholder="Meme,Shitpost...etc">
+    </div>
+
+        <br>
+
+    <div class = "userinput">
+        <label for="postcount">Post Count:</label>
+        <input type="text" id="pcount" name="pcount" placeholder="1 - 800">
+
+        <label for="commentcount">Comment Count:</label>
+        <input type="text" id="ccount" name="ccount" placeholder="1 - 1000">
+
+        <label for="replycount">Reply Count:</label>
+        <input type="text" id="rcount" name="rcount" placeholder="1 - 1000">
+    </div>
+
+<div class = "userinput">
+    <br>
+    <button type="submit">Fetch Data</button>
+    </div>
+
+    <div id="chart"></div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+    <script src="static/charts.js"></script>
+
+</head>
+<body>
+</body>
+</html>

@@ -1,64 +1,82 @@
 
 
 body{
-  font-family: 'Work Sans', sans-serif;
-  background: #C0C0C0;
+  font-family: 'Roboto', sans-serif;
+  background: transparent;
   text-align: center;
 }
 
 input[type=text] {
 
+  font-family: 'Roboto', sans-serif;
   padding: 13px 10px;
   margin: 13px 10;
   box-sizing: border-box;
   border: none;
   outline: none;
-  border-bottom: 1px solid red;
+  border-bottom: 2px solid #0099cc;
 }
 
 input[type=text]:focus {
-  border: 0.1px solid red;
-  background-color: #ccffcc;
+  border: 2px solid #0099cc;
 }
 
 button[type=submit] {
-
+  background-color: Transparent;
   padding: 15px 15px;
   margin: 15px 15;
   box-sizing: border-box;
-  border: 1px solid red;
+  border: 2px solid #0099cc;
+  border-radius: 3px;
   outline: none;
+  text-align: center;
 }
 
 button[type=submit]:focus {
-  width:100px;
+
+  width:75px;
   height:50px;
-  border: 0;
+  border: 1;
+  text-align: center;
 
   }
 
-#chart {
+#chartfrequency {
   max-width: 1000px;
-  margin: 50px auto;
-  padding: 25px 25px 0px 25px;
+  margin: 15px auto;
+  padding: 0px 0px 0px 0px;
   border-style: solid;
-  border: 1px solid red;
-  border-width: 1px;
-
-  #chart1 {
-  max-width: 1000px;
-  margin: 50px auto;
-  padding: 25px 25px 0px 25px;
-  border-style: solid;
-  border: 1px solid red;
-  border-width: 1px;
+  border: 2px solid #0099cc;
+  border-width: 2px;
+  border-radius: 3px;
 }
 
-#userinput (
+#chartsubjectivty {
+  max-width: 1000px;
+  margin: 15px auto;
+  padding: 0px 0px 0px 0px;
+  border-style: solid;
+  border: 2px solid #0099cc;
+  border-width: 2px;
+  border-radius: 3px;
+}
+
+#chartpolarity {
+  max-width: 1000px;
+  margin: 15px auto;
+  padding: 0px 0px 0px 0px;
+  border-style: solid;
+  border: 2px solid #0099cc;
+  border-width: 2px;
+  border-radius: 3px;
+}
+
+#userinput {
   max-width: 1000px;
   margin: 35px auto;
   border-style: solid;
   border-width: 1px;
-)
+  border-radius: 3px;
+}
 
 

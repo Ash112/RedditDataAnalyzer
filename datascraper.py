@@ -405,7 +405,9 @@ def scrapedata(subredditname,wordname,postcount,commentcount,replycount,flairfil
     #allwords_frequency = I_allwords
 
     # ---------------------------------------------------------------------------------------#
-
-    print(polarity_frequency)
+    #print(polarity_frequency)
 
     return json.dumps(word_frequency),json.dumps(Grouped_hourlydate),json.dumps(subjectivity_frequency),json.dumps(polarity_frequency)
+
+
+#word_time_frequency_data = scrapedata("news","trump",10,5,5,"meme")

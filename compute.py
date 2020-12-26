@@ -12,7 +12,7 @@ app = Flask(__name__)
 # a route where we will intially render the main page with random values?
 @app.route("/")
 def hello():
-    return render_template("index.html", word_frequency = initialvalue(),time_frequency =initialvalue(),sentiment_frequency = initialvalue())
+    return render_template("index.html", word_frequency = initialvalue(),time_frequency =initialvalue(),sentiment_frequency = initialvalue(),polarity_frequency= initialvalue())
 
 # a route that takes user inpur(Subreddit and Word) returns frequency over time data
 @app.route('/', methods =["GET", "POST"])
@@ -52,7 +52,7 @@ def userinput():
             word_time_frequency_data = scrapedata(subreddit,word,postcount,commentcount,replycount,ffilter)
 
             #print(json.loads(word_time_frequency_data[1]))
-            print(word_time_frequency_data[2])
+            #print(word_time_frequency_data[3])
             #print(word_time_frequency_data[1])
             #print(word_time_frequency_data[0])
 

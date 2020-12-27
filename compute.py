@@ -2,7 +2,7 @@
 from flask import Flask,request,render_template
 
 # imports the python definition from file
-from process import initialvalue
+from process import initialvalue,defaulttreedata
 
 from datascraper import scrapedata
 
@@ -12,20 +12,28 @@ app = Flask(__name__)
 # a route where we will intially render the main page with random values?
 @app.route("/")
 def hello():
-    return render_template("index.html", word_frequency = initialvalue(),time_frequency =initialvalue(),sentiment_frequency = initialvalue(),polarity_frequency= initialvalue())
+    return render_template("index.html",
+                           word_frequency = initialvalue(),
+                           time_frequency =initialvalue(),
+                           sentiment_frequency = initialvalue(),
+                           polarity_frequency= initialvalue(),
+                           score_frequency= initialvalue(),
+                           allword_frequency = defaulttreedata,
+                           allnumber_frequency = defaulttreedata,
+                           allflair_frequency = defaulttreedata)
 
 # a route that takes user inpur(Subreddit and Word) returns frequency over time data
 @app.route('/', methods =["GET", "POST"])
 def userinput():
 
     subreddit = ""
-    word = ""
+    word = "@#"
     ffilter = ""
     postcount = ""
     commentcount = ""
     replycount = ""
 
-    word_time_frequency_data = [initialvalue(),initialvalue(),initialvalue(),initialvalue()]
+    word_time_frequency_data = []
 
     if request.method == "POST":
         #inputs
@@ -43,20 +51,35 @@ def userinput():
         # getting input with reply count HTML form
         replycount = request.form.get("rcount")
 
-        if (subreddit == "") or (word == "") or (ffilter == "") or (postcount == "") or (commentcount == "") or (replycount == ""):
+        print(word)
 
-            print("no value ")
+        if word == "":
+
+            word = "-None-"
+
+        if (subreddit == "") or (postcount == "") or (commentcount == "") or (replycount == ""):
+
+            print("Enter Values to Proceed")
 
         else:
             #return processed output word frequency and timerange
             word_time_frequency_data = scrapedata(subreddit,word,postcount,commentcount,replycount,ffilter)
 
-            #print(json.loads(word_time_frequency_data[1]))
-            #print(word_time_frequency_data[3])
-            #print(word_time_frequency_data[1])
             #print(word_time_frequency_data[0])
 
-    return render_template("index.html", word_frequency = word_time_frequency_data[0],time_frequency = word_time_frequency_data[1],sentiment_frequency = word_time_frequency_data[2],polarity_frequency = word_time_frequency_data[3])
+       #to be displayed in graph title
+        worddata = " (" + str(word) + ")"
+
+    return render_template("index.html",
+                           word_frequency = word_time_frequency_data[0],
+                           time_frequency = word_time_frequency_data[1],
+                           sentiment_frequency = word_time_frequency_data[2],
+                           polarity_frequency = word_time_frequency_data[3],
+                           score_frequency = word_time_frequency_data[4],
+                           allword_frequency = word_time_frequency_data[5],
+                           allnumber_frequency = word_time_frequency_data[6],
+                           allflair_frequency = word_time_frequency_data[7],
+                           worddata = worddata)
 
 # run the application
 if __name__ == "__main__":

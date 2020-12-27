@@ -12,15 +12,13 @@ import pandas
 
 import math
 
-import decimal
-
-from decimal import *
-
 from emoji import UNICODE_EMOJI
 
 from nltk import WordNetLemmatizer
 
 from nltk.stem import PorterStemmer
+
+from nltk import FreqDist
 
 import nltk
 
@@ -98,6 +96,10 @@ def scrapedata(subredditname,wordname,postcount,commentcount,replycount,flairfil
 
     I_allwords = []
 
+    I_allnumbers = []
+
+    I_allfliars = []
+
 
     # Definitions------------------------------------------------------------------#
 
@@ -133,6 +135,7 @@ def scrapedata(subredditname,wordname,postcount,commentcount,replycount,flairfil
                     if character not in UNICODE_EMOJI:
 
                         if any(character.isdigit() for character in lowerwords):
+                            I_allnumbers.append(lowerwords)
                             break
 
                         lemmedwords = lem.lemmatize(lowerwords, "v")
@@ -165,6 +168,39 @@ def scrapedata(subredditname,wordname,postcount,commentcount,replycount,flairfil
         return newdata
 
     # -----------------------------------------------------------------------------#
+    # get word frequnecy
+
+    def createpaireddict(fdistwordlist):
+
+        frequentwords = []
+        frequentwordscount = []
+        localfinal = []
+        final = []
+        sorted_dict = {}
+
+        fdist = FreqDist(fdistwordlist)
+
+        sorted_keys = sorted(fdist, key=fdist.get)
+
+        for w in sorted_keys:
+            sorted_dict[w] = fdist[w]
+
+        dictwords = dict(reversed(list(sorted_dict.items())))
+
+        for keys, values in dictwords.items():
+            valxy = ['x', 'y']
+
+            splitlist = [keys, values]
+
+            res = dict(zip(valxy, splitlist))
+
+            localfinal.append(res)
+
+        final = localfinal[:25]
+
+        return final
+
+    # -----------------------------------------------------------------------------#
 
     # create a reddit object with details - to use json!!
     reddit = praw.Reddit(client_id='YtDeMC6y6k2TlA',
@@ -195,6 +231,9 @@ def scrapedata(subredditname,wordname,postcount,commentcount,replycount,flairfil
         if (posts.link_flair_text not in I_flairfilter):
 
             print(posts.link_flair_text)
+
+            # adds post flair to list
+            I_allfliars.append(str(posts.link_flair_text))
 
             I_postcount = I_postcount + 1
 
@@ -388,9 +427,16 @@ def scrapedata(subredditname,wordname,postcount,commentcount,replycount,flairfil
 
     Scoretable = Scoretable.groupby('Dates').sum()
 
-    # ---------------------------------------------------------------------------------------#
+    # -------------------------------------------------------------------------------#
+    #Outputs:
 
-    #I_frequency,I_date,I_score,I_type,I_sentsubjectivity,I_sentpolarity,I_allwords,
+    #type_frequency = I_type
+
+    allflair_frequency = (createpaireddict(I_allfliars))
+
+    allnumber_frequency = (createpaireddict(I_allnumbers))
+
+    allwords_frequency = (createpaireddict(I_allwords))
 
     word_frequency = frequencytable['Frequency'].tolist()
 
@@ -400,14 +446,20 @@ def scrapedata(subredditname,wordname,postcount,commentcount,replycount,flairfil
 
     polarity_frequency = roundupnew(Polaritytable['Sentiment_Polarity'].tolist())
 
-    #type_frequency = I_type
+    # ---------------------------------------------------------------------------------------#
+    #test area:
 
-    #allwords_frequency = I_allwords
+    #print(createpaireddict(I_allwords))
+
+
 
     # ---------------------------------------------------------------------------------------#
-    #print(polarity_frequency)
 
-    return json.dumps(word_frequency),json.dumps(Grouped_hourlydate),json.dumps(subjectivity_frequency),json.dumps(polarity_frequency)
+    return json.dumps(word_frequency),json.dumps(Grouped_hourlydate),json.dumps(subjectivity_frequency),json.dumps(polarity_frequency),json.dumps(score_frequency),json.dumps(allwords_frequency),json.dumps(allnumber_frequency),json.dumps(allflair_frequency)
 
+# ---------------------------------------------------------------------------------------#
+# test area:
 
-#word_time_frequency_data = scrapedata("news","trump",10,5,5,"meme")
+#word_time_frequency_data = scrapedata("wallstreetbets","trump",1,100,100,"meme")
+
+# ---------------------------------------------------------------------------------------#

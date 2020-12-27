@@ -20,8 +20,6 @@ frequentwordscount = []
 
 fdist = FreqDist(I_allwords)
 
-# -------------------------------------------------------------------------------#
-
 sorted_dict = {}
 
 sorted_keys = sorted(fdist, key=fdist.get)

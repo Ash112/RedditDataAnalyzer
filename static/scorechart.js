@@ -4,21 +4,15 @@
         //common date data
 var time_frequency = JSON.parse(document.querySelector('#time_frequency').value)
 
-        //frequencychartoptions
-var word_frequency = JSON.parse(document.querySelector('#word_frequency').value)
+        //polarity chart data
+var score_frequency = JSON.parse(document.querySelector('#score_frequency').value)
 
-var worddata = document.querySelector('#worddata').value
-
-        //document.write(time_frequency)
-        //document.write(word_frequency)
-        //document.write(word_frequency)
-
-         // chart for frequency
- var options1 = {
+        //chart 2
+         var options4 = {
           series: [
           {
-            name: "Frequency",
-            data: word_frequency
+            name: "votes",
+            data: score_frequency
           },
                 ],
 
@@ -51,7 +45,7 @@ var worddata = document.querySelector('#worddata').value
                 },
 
         title: {
-          text: 'Word Frequency ' + worddata ,
+          text: 'Content votes',
           align: 'Center'
                 },
 
@@ -78,7 +72,6 @@ var worddata = document.querySelector('#worddata').value
 
         markers: {
           size: 2.5,
-
                 },
 
         xaxis: {
@@ -90,13 +83,11 @@ var worddata = document.querySelector('#worddata').value
         },
         yaxis: {
           title: {
-            text: 'Frequency'
+            text: 'Votes'
           },
         },
 
         };
 
-        var chart1 = new ApexCharts(document.querySelector("#chartfrequency"), options1);
-        chart1.render();
-
-
+        var chart4 = new ApexCharts(document.querySelector("#chartscore"), options4);
+        chart4.render();

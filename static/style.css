@@ -9,12 +9,13 @@ body{
 input[type=text] {
 
   font-family: 'Roboto', sans-serif;
-  padding: 13px 10px;
-  margin: 13px 10;
+  padding: 5px 5px;
+  margin: 15px 0;
   box-sizing: border-box;
   border: none;
   outline: none;
   border-bottom: 2px solid #0099cc;
+
 }
 
 input[type=text]:focus {
@@ -23,10 +24,10 @@ input[type=text]:focus {
 
 button[type=submit] {
   background-color: Transparent;
-  padding: 15px 15px;
-  margin: 15px 15;
+  padding: 10px 45.75%;
+  margin: 15px 15px;
   box-sizing: border-box;
-  border: 2px solid #0099cc;
+  border: 0px solid #0099cc;
   border-radius: 3px;
   outline: none;
   text-align: center;
@@ -34,48 +35,108 @@ button[type=submit] {
 
 button[type=submit]:focus {
 
-  width:75px;
-  height:50px;
   border: 1;
-  text-align: center;
+
 
   }
 
-#chartfrequency {
+#charttab {
   max-width: 1000px;
   margin: 15px auto;
   padding: 0px 0px 0px 0px;
   border-style: solid;
   border: 2px solid #0099cc;
   border-width: 2px;
+  border-radius: 3px;
+}
+
+#inputtab {
+  max-width: 950px;
+  margin: 20px auto;
+  padding: 0px 0px 0px 0px;
+  border-style: solid;
+  border: 2px solid #0099cc;
+  border-width: 0px;
+  border-radius: 3px;
+}
+
+#chartfrequency {
+  max-width: 950px;
+  margin: 20px auto;
+  padding: 0px 0px 0px 0px;
+  border-style: solid;
+  border: 2px solid #0099cc;
+  border-width: 0px;
   border-radius: 3px;
 }
 
 #chartsubjectivty {
-  max-width: 1000px;
-  margin: 15px auto;
+  max-width: 950px;
+  margin: 20px auto;
   padding: 0px 0px 0px 0px;
   border-style: solid;
   border: 2px solid #0099cc;
-  border-width: 2px;
+  border-width: 0px;
   border-radius: 3px;
 }
 
 #chartpolarity {
-  max-width: 1000px;
-  margin: 15px auto;
+  max-width: 950px;
+  margin: 20px auto;
   padding: 0px 0px 0px 0px;
   border-style: solid;
   border: 2px solid #0099cc;
-  border-width: 2px;
+  border-width: 0px;
+  border-radius: 3px;
+}
+
+#chartscore {
+ max-width: 950px;
+  margin: 20px auto;
+  padding: 0px 0px 0px 0px;
+  border-style: solid;
+  border: 2px solid #0099cc;
+  border-width: 0px;
+  border-radius: 3px;
+}
+
+#wordtreemap {
+ max-width: 950px;
+  margin: 20px auto;
+  padding: 0px 0px 0px 0px;
+  border-style: solid;
+  border: 2px solid #0099cc;
+  border-width: 0px;
+  border-radius: 3px;
+}
+
+#numbertreemap {
+ max-width: 950px;
+  margin: 20px auto;
+  padding: 0px 0px 0px 0px;
+  border-style: solid;
+  border: 2px solid #0099cc;
+  border-width: 0px;
+  border-radius: 3px;
+}
+
+#flairtreemap {
+ max-width: 950px;
+  margin: 20px auto;
+  padding: 0px 0px 0px 0px;
+  border-style: solid;
+  border: 2px solid #0099cc;
+  border-width: 0px;
   border-radius: 3px;
 }
 
 #userinput {
   max-width: 1000px;
-  margin: 35px auto;
+  margin: 20px auto;
+  padding: 0px 0px 0px 0px;
   border-style: solid;
-  border-width: 1px;
+  border: 2px solid #0099cc;
+  border-width: 2px;
   border-radius: 3px;
 }
 

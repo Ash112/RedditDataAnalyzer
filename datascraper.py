@@ -2,21 +2,17 @@ import praw as praw
 
 from textblob import TextBlob
 
-import datetime
+from datetime import datetime
 
-import time
+from time import time
 
 import json
 
 import pandas
 
-import math
-
 from emoji import UNICODE_EMOJI
 
 from nltk import WordNetLemmatizer
-
-from nltk.stem import PorterStemmer
 
 from nltk import FreqDist
 
@@ -26,13 +22,11 @@ nltk.download('punkt')
 
 nltk.download('wordnet')
 
-import gensim
+#import gensim
 
-from gensim.parsing.preprocessing import remove_stopwords
+#gensim_stopwords = gensim.parsing.preprocessing.STOPWORDS
 
-gensim_stopwords = gensim.parsing.preprocessing.STOPWORDS
-
-from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
+#from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
 
 stopwords = {'aint', 'years', 'thread', 'year', 'one', 'contact', 'comment', 'first', 'last', 'bot', 'remove',
              'removed', 'vote', 'violating', 'flair', 'shitposts', 'shitpost', 'say', 'answer', 'related', 'posting',
@@ -54,17 +48,14 @@ stopwords = {'aint', 'years', 'thread', 'year', 'one', 'contact', 'comment', 'fi
 
 # -------------------------------------------------------------------------------#
 
-
 #definition for running scraper
 def scrapedata(subredditname,wordname,postcount,commentcount,replycount,flairfilter):
 
     # starting time
 
-    start = time.time()
+    start = time()
 
     lem = WordNetLemmatizer()
-
-    porter = PorterStemmer()
 
     # Inputs:-----------------------------------------------------------------------#
 
@@ -100,11 +91,13 @@ def scrapedata(subredditname,wordname,postcount,commentcount,replycount,flairfil
 
     I_allfliars = []
 
+    I_sentiment = []
 
     # Definitions------------------------------------------------------------------#
 
     # defenition for checking polarity
     def getpolarity(text):
+
         blob = TextBlob(text)
 
         sentiment = blob.sentiment
@@ -113,11 +106,14 @@ def scrapedata(subredditname,wordname,postcount,commentcount,replycount,flairfil
 
         I_sentpolarity.append(sentiment[0])
 
+        # calculates overall sentiment
+        I_sentiment.append((sentiment[1]+sentiment[0])/2)
 
     # -----------------------------------------------------------------------------#
 
     # defenition for checking word occurence and cleaning words.
     def getwordcount(text):
+
         blob = TextBlob(text)
 
         frequency = str(blob).count(I_wordtocount)
@@ -144,10 +140,13 @@ def scrapedata(subredditname,wordname,postcount,commentcount,replycount,flairfil
 
                         # print("lemmed - " + lowerlemmedwords)
 
-                        if (lowerlemmedwords not in stopwords) and (lowerlemmedwords not in gensim_stopwords) and (
-                            lowerlemmedwords not in ENGLISH_STOP_WORDS):
+                        #if (lowerlemmedwords not in stopwords) and (lowerlemmedwords not in gensim_stopwords) and (
+                                    #lowerlemmedwords not in ENGLISH_STOP_WORDS):
+
+                        if (lowerlemmedwords not in stopwords):
 
                             if (len(lowerlemmedwords) >= 3):
+
                                 I_allwords.append(lowerlemmedwords)
 
         return frequency
@@ -156,26 +155,27 @@ def scrapedata(subredditname,wordname,postcount,commentcount,replycount,flairfil
     # -----------------------------------------------------------------------------#
     # mean
     def Average(lst):
+
         return sum(lst) / len(lst)
 
     # -----------------------------------------------------------------------------#
     # roundup
     def roundupnew (list):
+
         newdata = []
+
         for x in list:
+
             newdata.append(round(x, 2))
 
         return newdata
 
     # -----------------------------------------------------------------------------#
     # get word frequnecy
-
     def createpaireddict(fdistwordlist):
 
-        frequentwords = []
-        frequentwordscount = []
         localfinal = []
-        final = []
+
         sorted_dict = {}
 
         fdist = FreqDist(fdistwordlist)
@@ -188,6 +188,7 @@ def scrapedata(subredditname,wordname,postcount,commentcount,replycount,flairfil
         dictwords = dict(reversed(list(sorted_dict.items())))
 
         for keys, values in dictwords.items():
+
             valxy = ['x', 'y']
 
             splitlist = [keys, values]
@@ -196,7 +197,7 @@ def scrapedata(subredditname,wordname,postcount,commentcount,replycount,flairfil
 
             localfinal.append(res)
 
-        final = localfinal[:25]
+        final = localfinal[:30]
 
         return final
 
@@ -251,7 +252,7 @@ def scrapedata(subredditname,wordname,postcount,commentcount,replycount,flairfil
             I_score.append(posts.score)
 
             # append post date
-            I_date.append(datetime.datetime.fromtimestamp(posts.created))
+            I_date.append(datetime.fromtimestamp(posts.created))
 
             # append word frequency
             I_frequency.append(getwordcount(str(posts.title)))
@@ -278,7 +279,7 @@ def scrapedata(subredditname,wordname,postcount,commentcount,replycount,flairfil
                 I_score.append(comments.score)
 
                 # append comment date
-                I_date.append(datetime.datetime.fromtimestamp(comments.created))
+                I_date.append(datetime.fromtimestamp(comments.created))
 
                 # append word frequency
                 I_frequency.append(getwordcount(str(comments.body)))
@@ -306,7 +307,7 @@ def scrapedata(subredditname,wordname,postcount,commentcount,replycount,flairfil
                         I_score.append(reply.score)
 
                         # append reply date
-                        I_date.append(datetime.datetime.fromtimestamp(reply.created))
+                        I_date.append(datetime.fromtimestamp(reply.created))
 
                         # append word frequency
                         I_frequency.append(getwordcount(str(reply.body)))
@@ -314,56 +315,13 @@ def scrapedata(subredditname,wordname,postcount,commentcount,replycount,flairfil
                         # append sentiment
                         getpolarity(str(reply.body))
 
-                        # --------------------------------------------------------------#
 
-                        # print("   $REPLY$ " + reply.body + "\n")
-
-    # end time
-    end = time.time()
-
-    # --------------------------------------------------------------------------------#
-    print("Total Posts,Comments & Replies = " + str(len(I_date)) + "\n")
-
-    print("There are - " + str(sum(I_frequency)) + " mentions of " + "| " + I_wordtocount + " |" + "\n")
-
-    print("Time taken to run =" + str(end - start) + "\n")
-
-    # --------------------------------------------------------------#
-
-    # Average polarity calculations(Overall)
-
-    actualvaluespol = (len(I_sentpolarity) - (I_sentpolarity.count(0)))
-
-    sumpolarity = sum(I_sentpolarity)
-
-    avgpolarity = sumpolarity / actualvaluespol
-
-    print('Average polarity = ' + str(avgpolarity) + "\n")
-
-    # Average subjectivity calculations(Overall)
-
-    actualvaluessub = (len(I_sentsubjectivity) - (I_sentsubjectivity.count(0)))
-
-    sumsubjectivity = sum(I_sentsubjectivity)
-
-    avgsubjectivty = sumsubjectivity / actualvaluessub
-
-    print('Average Subjectivity = ' + str(avgsubjectivty))
-
-    # --------------------------------------------------------------#
-    # all data
-    #data = {'Dates': I_date, 'Frequency': I_frequency, 'Sentiment_Polarity': I_sentpolarity,
-            #'SentSubjectivity': I_sentsubjectivity, 'Score': I_score, 'Type': I_type}
-
-    #table = pandas.DataFrame(data)
-
-    #with pandas.option_context('display.max_rows', None, 'display.max_columns', None):
-        #print(table)
     # --------------------------------------------------------------#
     # grouped data for hourly plots
     I_hourlydate = []
 
     for date in I_date:
+
         year = str(date.year)
 
         month = "0" + str(date.month)
@@ -378,11 +336,8 @@ def scrapedata(subredditname,wordname,postcount,commentcount,replycount,flairfil
 
         I_hourlydate.append(str(newdate))
 
-    #grouped hourly data:
-
-    #Grouped_hourlydate = set(I_hourlydate)
-
     Grouped_hourlydate = []
+
     for x in I_hourlydate:
 
         if x not in Grouped_hourlydate:
@@ -390,6 +345,7 @@ def scrapedata(subredditname,wordname,postcount,commentcount,replycount,flairfil
             Grouped_hourlydate.append(x)
 
     Grouped_hourlydate = sorted(Grouped_hourlydate)
+
     # Grouped data output
     # ----------------------------------------------------------------------------------------------#
     # 1) Grouped data with Frequency
@@ -403,23 +359,14 @@ def scrapedata(subredditname,wordname,postcount,commentcount,replycount,flairfil
     # ----------------------------------------------------------------------------------------------#
     # 2) Grouped data with Sent Polarity
 
-    Polaritygroup = {'Dates': I_hourlydate, 'Sentiment_Polarity': I_sentpolarity}
+    Sentimentgroup = {'Dates': I_hourlydate, 'Sentiment': I_sentiment}
 
-    Polaritytable = pandas.DataFrame(Polaritygroup)
+    Sentimenttable = pandas.DataFrame(Sentimentgroup)
 
-    Polaritytable = Polaritytable.groupby('Dates').mean()
-
-    # ----------------------------------------------------------------------------------------------#
-    # 3) Grouped data with Sent Polarity
-
-    Subjectivitygroup = {'Dates': I_hourlydate, 'SentSubjectivity': I_sentsubjectivity}
-
-    Subjectivitytable = pandas.DataFrame(Subjectivitygroup)
-
-    Subjectivitytable = Subjectivitytable.groupby('Dates').mean()
+    Subjectivitytable = Sentimenttable.groupby('Dates').mean()
 
     # ----------------------------------------------------------------------------------------------#
-    # 4) Grouped data with Score
+    # 3) Grouped data with Score
 
     Scoregroup = {'Dates': I_hourlydate, 'Score': I_score}
 
@@ -442,24 +389,27 @@ def scrapedata(subredditname,wordname,postcount,commentcount,replycount,flairfil
 
     score_frequency = Scoretable['Score'].tolist()
 
-    subjectivity_frequency = roundupnew(Subjectivitytable['SentSubjectivity'].tolist())
+    sentiment_frequency = roundupnew(Subjectivitytable['Sentiment'].tolist())
 
-    polarity_frequency = roundupnew(Polaritytable['Sentiment_Polarity'].tolist())
+    # end time
+    end = time()
+    # --------------------------------------------------------------------------------#
+    print("Total Posts,Comments & Replies = " + str(len(I_date)) + "\n")
+
+    print("Time taken to run =" + str(end - start) + "\n")
 
     # ---------------------------------------------------------------------------------------#
     #test area:
 
     #print(createpaireddict(I_allwords))
 
-
-
     # ---------------------------------------------------------------------------------------#
 
-    return json.dumps(word_frequency),json.dumps(Grouped_hourlydate),json.dumps(subjectivity_frequency),json.dumps(polarity_frequency),json.dumps(score_frequency),json.dumps(allwords_frequency),json.dumps(allnumber_frequency),json.dumps(allflair_frequency)
+    return json.dumps(word_frequency),json.dumps(Grouped_hourlydate),json.dumps(sentiment_frequency),json.dumps(score_frequency),json.dumps(allwords_frequency),json.dumps(allnumber_frequency),json.dumps(allflair_frequency)
 
 # ---------------------------------------------------------------------------------------#
 # test area:
 
-#word_time_frequency_data = scrapedata("wallstreetbets","trump",1,100,100,"meme")
+#word_time_frequency_data = scrapedata("wallstreetbets","trump",2,100,100,"meme")
 
 # ---------------------------------------------------------------------------------------#

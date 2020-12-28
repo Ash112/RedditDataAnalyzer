@@ -13,11 +13,10 @@ app = Flask(__name__)
 @app.route("/")
 def hello():
     return render_template("index.html",
-                           word_frequency = initialvalue(),
-                           time_frequency =initialvalue(),
-                           sentiment_frequency = initialvalue(),
-                           polarity_frequency= initialvalue(),
-                           score_frequency= initialvalue(),
+                           word_frequency = initialvalue,
+                           time_frequency =initialvalue,
+                           sentiment_frequency = initialvalue,
+                           score_frequency= initialvalue,
                            allword_frequency = defaulttreedata,
                            allnumber_frequency = defaulttreedata,
                            allflair_frequency = defaulttreedata)
@@ -33,7 +32,7 @@ def userinput():
     commentcount = ""
     replycount = ""
 
-    word_time_frequency_data = []
+    word_time_frequency_data = [initialvalue,initialvalue,initialvalue,initialvalue,initialvalue,initialvalue,initialvalue,initialvalue]
 
     if request.method == "POST":
         #inputs
@@ -74,11 +73,10 @@ def userinput():
                            word_frequency = word_time_frequency_data[0],
                            time_frequency = word_time_frequency_data[1],
                            sentiment_frequency = word_time_frequency_data[2],
-                           polarity_frequency = word_time_frequency_data[3],
-                           score_frequency = word_time_frequency_data[4],
-                           allword_frequency = word_time_frequency_data[5],
-                           allnumber_frequency = word_time_frequency_data[6],
-                           allflair_frequency = word_time_frequency_data[7],
+                           score_frequency = word_time_frequency_data[3],
+                           allword_frequency = word_time_frequency_data[4],
+                           allnumber_frequency = word_time_frequency_data[5],
+                           allflair_frequency = word_time_frequency_data[6],
                            worddata = worddata)
 
 # run the application

@@ -24,10 +24,10 @@ input[type=text]:focus {
 
 button[type=submit] {
   background-color: Transparent;
-  padding: 10px 45.75%;
+  padding: 10px 10%;
   margin: 15px 15px;
   box-sizing: border-box;
-  border: 0px solid #0099cc;
+  border: 2px solid #0099cc;
   border-radius: 3px;
   outline: none;
   text-align: center;
@@ -70,17 +70,7 @@ button[type=submit]:focus {
   border-radius: 3px;
 }
 
-#chartsubjectivty {
-  max-width: 950px;
-  margin: 20px auto;
-  padding: 0px 0px 0px 0px;
-  border-style: solid;
-  border: 2px solid #0099cc;
-  border-width: 0px;
-  border-radius: 3px;
-}
-
-#chartpolarity {
+#chartsentiment{
   max-width: 950px;
   margin: 20px auto;
   padding: 0px 0px 0px 0px;

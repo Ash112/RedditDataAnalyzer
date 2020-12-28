@@ -11,7 +11,7 @@ var sentiment_frequency = JSON.parse(document.querySelector('#sentiment_frequenc
          var options2 = {
           series: [
           {
-            name: "Subjectivity",
+            name: "Sentiment",
             data: sentiment_frequency
           },
                 ],
@@ -45,7 +45,7 @@ var sentiment_frequency = JSON.parse(document.querySelector('#sentiment_frequenc
                 },
 
         title: {
-          text: 'Content Subjectivity',
+          text: 'Content Sentiment',
           align: 'Center'
                 },
 
@@ -89,5 +89,5 @@ var sentiment_frequency = JSON.parse(document.querySelector('#sentiment_frequenc
 
         };
 
-        var chart2 = new ApexCharts(document.querySelector("#chartsubjectivty"), options2);
+        var chart2 = new ApexCharts(document.querySelector("#chartsentiment"), options2);
         chart2.render();

@@ -22,23 +22,8 @@ input[type=text]:focus {
   border: 2px solid #0099cc;
 }
 
-button[type=submit] {
-  background-color: Transparent;
-  padding: 10px 10%;
-  margin: 15px 15px;
-  box-sizing: border-box;
-  border: 2px solid #0099cc;
-  border-radius: 3px;
-  outline: none;
-  text-align: center;
-}
-
-button[type=submit]:focus {
-
-  border: 1;
 
 
-  }
 
 #charttab {
   max-width: 1000px;
@@ -130,4 +115,121 @@ button[type=submit]:focus {
   border-radius: 3px;
 }
 
+button[type=submit] {
+  background-color: Transparent;
+  padding: 10px 6%;
+  margin: 15px 10px;
+  font-size: 15px;
+  box-sizing: border-box;
+  border: 2px solid #0099cc;
+  border-radius: 3px;
+  outline: none;
+  text-align: center;
+}
 
+.btn:visited {
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 15px 40px;
+    display: inline-block;
+    border-radius: 100px;
+    transition: all .2s;
+    position: absolute;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
+}
+
+.btn:active {
+    transform: translateY(0px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
+}
+
+.btn-white {
+    background-color: #fff;
+    color: #777;
+}
+
+.btn::after {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    border-radius: 100px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    transition: all .9s;
+}
+
+.btn-white::after {
+    background-color: #fff;
+}
+
+.btn:hover::after {
+    transform: scaleX(1) scaleY(1);
+    opacity: 0;
+}
+
+.btn-animated {
+    animation: moveInBottom 5s ease-out;
+    animation-fill-mode: backwards;
+}
+
+@keyframes moveInBottom {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+#loader {
+  position:inherit;
+  padding: 10px 10px;
+  margin: 10px 48% 10px;
+  z-index: 1;
+  width: 35px;
+  height: 35px;
+  border: 2px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 2px solid #3498db;
+  -webkit-animation: spin 1s linear infinite;
+  animation: spin 1s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Add animation to "page content" */
+.animate-bottom {
+  position: relative;
+  -webkit-animation-name: animatebottom;
+  -webkit-animation-duration: 15s;
+  animation-name: animatebottom;
+  animation-duration: 15s
+}
+
+@-webkit-keyframes animatebottom {
+  from { bottom:-100px; opacity:0 }
+  to { bottom:0px; opacity:1 }
+}
+
+@keyframes animatebottom {
+  from{ bottom:-100px; opacity:0 }
+  to{ bottom:0; opacity:1 }
+}

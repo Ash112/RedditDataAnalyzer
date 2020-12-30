@@ -83,7 +83,7 @@ var sentiment_frequency = JSON.parse(document.querySelector('#sentiment_frequenc
         },
         yaxis: {
           title: {
-            text: 'Subjectivity'
+            text: 'Sentiment'
           },
         },
 

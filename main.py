@@ -50,8 +50,6 @@ def userinput():
         # getting input with reply count HTML form
         replycount = request.form.get("rcount")
 
-        print(word)
-
         if word == "":
 
             word = "-None-"

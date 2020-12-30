@@ -52,11 +52,13 @@
         <label for="replycount">Replies:</label>
         <input type="text" id="rcount" name="rcount" placeholder="1 - 100(Max)*">
 
-        </div>
+        </div class="w3-container">
 
-        <button class="w3-card w3-center" type="submit" id="submitbutton">Submit</button>
+        <button onclick="createloader()" class="btn btn-white btn-animate w3-card" type="submit" id="submitbutton">Submit</button>
+
+        <div id="loader" style="display:none;" class="w3-center"></div>
+
     </div>
-
 
 
 </form>
@@ -83,6 +85,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
+    <script src="static/loader.js"></script>
     <script src="static/frequencychart.js"></script>
     <script src="static/subjectivitychart.js"></script>
     <script src="static/scorechart.js"></script>

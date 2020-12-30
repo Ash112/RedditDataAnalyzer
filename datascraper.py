@@ -81,10 +81,6 @@ def scrapedata(subredditname,wordname,postcount,commentcount,replycount,flairfil
 
     I_type = []
 
-    I_sentsubjectivity = []
-
-    I_sentpolarity = []
-
     I_allwords = []
 
     I_allnumbers = []
@@ -101,11 +97,6 @@ def scrapedata(subredditname,wordname,postcount,commentcount,replycount,flairfil
         blob = TextBlob(text)
 
         sentiment = blob.sentiment
-
-        I_sentsubjectivity.append(sentiment[1])
-
-        I_sentpolarity.append(sentiment[0])
-
         # calculates overall sentiment
         I_sentiment.append((sentiment[1]+sentiment[0])/2)
 
@@ -176,18 +167,13 @@ def scrapedata(subredditname,wordname,postcount,commentcount,replycount,flairfil
 
         localfinal = []
 
-        sorted_dict = {}
+        numberofelements = 30
 
         fdist = FreqDist(fdistwordlist)
 
-        sorted_keys = sorted(fdist, key=fdist.get)
+        slicedfdist = dict(fdist.most_common(numberofelements))
 
-        for w in sorted_keys:
-            sorted_dict[w] = fdist[w]
-
-        dictwords = dict(reversed(list(sorted_dict.items())))
-
-        for keys, values in dictwords.items():
+        for keys, values in slicedfdist.items():
 
             valxy = ['x', 'y']
 
@@ -197,9 +183,7 @@ def scrapedata(subredditname,wordname,postcount,commentcount,replycount,flairfil
 
             localfinal.append(res)
 
-        final = localfinal[:30]
-
-        return final
+        return localfinal
 
     # -----------------------------------------------------------------------------#
 
@@ -363,7 +347,7 @@ def scrapedata(subredditname,wordname,postcount,commentcount,replycount,flairfil
 
     Sentimenttable = pandas.DataFrame(Sentimentgroup)
 
-    Subjectivitytable = Sentimenttable.groupby('Dates').mean()
+    Sentimenttable = Sentimenttable.groupby('Dates').mean()
 
     # ----------------------------------------------------------------------------------------------#
     # 3) Grouped data with Score
@@ -389,7 +373,7 @@ def scrapedata(subredditname,wordname,postcount,commentcount,replycount,flairfil
 
     score_frequency = Scoretable['Score'].tolist()
 
-    sentiment_frequency = roundupnew(Subjectivitytable['Sentiment'].tolist())
+    sentiment_frequency = roundupnew(Sentimenttable['Sentiment'].tolist())
 
     # end time
     end = time()

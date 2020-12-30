@@ -1,12 +1,14 @@
 # RedditDataAnalyzer
 WebApp to Extract &amp; Analyze Data from Reddit
 
-View App:
+View App(WIP):
   https://redditdataanalyzer.herokuapp.com/
 
-uses:
--Python, flask, heroku
-,Javascript
-,CSS
-,HTML
+
+-Python,Javascript,CSS,HTML 
+
+-flask, heroku
+
+
+
 

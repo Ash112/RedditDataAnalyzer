@@ -1,14 +1,37 @@
 
 
 body{
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Armata';font-size: 14px;
   background: transparent;
   text-align: center;
 }
 
+#headertext {
+font-family: 'Armata';font-size: 22px;
+    max-width: 325px;
+  margin: 15px auto;
+  padding: 0px 0px 0px 0px;
+  border-style: solid;
+  border: 0px solid #0099cc;
+  border-width: 0px;
+  border-radius: 3px;
+  color: #0099cc;
+  }
+
+  .error {
+  font-family: 'Armata';font-size: 14px;
+  max-width: 950px;
+  margin: 15px auto;
+  padding: 0px 0px 0px 0px;
+  border-style: solid;
+  border: 0px solid #0099cc;
+  border-width: 0px;
+  border-radius: 0px;
+  }
+
 input[type=text] {
 
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Armata', sans-serif;
   padding: 5px 5px;
   margin: 15px 0;
   box-sizing: border-box;
@@ -117,7 +140,8 @@ input[type=text]:focus {
 
 button[type=submit] {
   background-color: Transparent;
-  padding: 10px 6%;
+  font-family: 'Armata';
+  padding: 0px 5%;
   margin: 15px 10px;
   font-size: 15px;
   box-sizing: border-box;
@@ -205,6 +229,11 @@ button[type=submit] {
   animation: spin 1s linear infinite;
 }
 
+#loading {
+font-family: 'Armata';font-size: 12px;
+
+}
+
 @-webkit-keyframes spin {
   0% { -webkit-transform: rotate(0deg); }
   100% { -webkit-transform: rotate(360deg); }
@@ -219,9 +248,9 @@ button[type=submit] {
 .animate-bottom {
   position: relative;
   -webkit-animation-name: animatebottom;
-  -webkit-animation-duration: 15s;
+  -webkit-animation-duration: 5000s;
   animation-name: animatebottom;
-  animation-duration: 15s
+  animation-duration: 5000s
 }
 
 @-webkit-keyframes animatebottom {

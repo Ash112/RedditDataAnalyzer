@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
 
+        <link href='https://fonts.googleapis.com/css?family=Armata' rel='stylesheet'>
+
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
         <link rel="stylesheet" href="static/style.css">
@@ -28,18 +30,21 @@
     <link rel="stylesheet" href="static/style.css">
 
     <div id = "userinput">
+
+        <div id="headertext"  class="w3-center w3-card "><p>Reddit Data Analyzer</p></div>
+
         <form action="{{ url_for("userinput")}}" method="post">
 
         <div class="w3-card w3-center" id = "inputtab">
 
         <label for="subname">Subreddit:</label>
-        <input type="text" id="subname" name="sname" placeholder="News,Funny,Askreddit...etc">
+        <input type="text" id="subname" name="sname" placeholder="news,funny,askreddit...etc">
 
         <label for="words">Word(Optional):</label>
-        <input type="text" id="words" name="wname" placeholder="Covid,Biden,Stimulus...etc">
+        <input type="text" id="words" name="wname" placeholder="covid,vaccine,stimulus...etc">
 
         <label for="flairfilter">Flair Filter(Optional):</label>
-        <input type="text" id="ffilter" name="ffilter" placeholder="Meme,Shitpost...etc">
+        <input type="text" id="ffilter" name="ffilter" placeholder="meme,satire...etc">
 
         <br>
 
@@ -47,16 +52,25 @@
         <input type="text" id="pcount" name="pcount" placeholder="1 - 5(Max)*">
 
         <label for="commentcount">Comments:</label>
-        <input type="text" id="ccount" name="ccount" placeholder="1 - 200(Max)*">
+        <input type="text" id="ccount" name="ccount" placeholder="1 - 100(Max)*">
 
         <label for="replycount">Replies:</label>
         <input type="text" id="rcount" name="rcount" placeholder="1 - 100(Max)*">
 
         </div class="w3-container">
 
-        <button onclick="createloader()" class="btn btn-white btn-animate w3-card" type="submit" id="submitbutton">Submit</button>
+        <button onclick="createloader()" class="btn btn-white btn-animate w3-card" type="submit" id="submitbutton"><h5>Submit</h5></button>
 
-        <div id="loader" style="display:none;" class="w3-center"></div>
+        <div id="loader" style="display:none;" class="w3-center">
+        </div>
+
+        <div id="loading" style="display:none;" class="w3-center">
+        <h6>...Loading...</h6></div>
+
+        {% for message in get_flashed_messages() %}
+        <div class="error w3-center w3-card"><p>{{ message }}</p></div>
+        {% endfor %}
+
 
     </div>
 

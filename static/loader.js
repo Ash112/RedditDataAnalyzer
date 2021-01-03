@@ -1,8 +1,10 @@
    var myVar;
 
+
     function createloader() {
     document.getElementById("loader").style.display = "inherit";
-      myVar = setTimeout(hideloader, 30000);
+    //document.getElementById("loading").style.display = "inherit";
+
     }
 
     function hideloader() {
